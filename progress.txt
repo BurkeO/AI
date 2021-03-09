@@ -1,1 +1,4 @@
-"" 
+9th Mar - See meeting minutes. Had a general discusssion around the topics to examine for the project and began to focus more on the game space as there is plenty of info online in this area.
+	Considered different games (mostly grid based games to keep this relatively simple) such as chess, minesweeper, checkers, etc. Also looked at Car racing (https://www.youtube.com/watch?v=r428O_CMcpI). Aaron noted
+	that a fair few of the openAI atari environments have an RGB image as their state space, so we decided against those. We have initially settled on the game snake and discussed the possible algorithms we could look at
+	and have sent an email looking for some feedback on our ideas. We will schedule another meeting when we receive a response to discuss the next steps
