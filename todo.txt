@@ -1,1 +1,7 @@
 9th Mar - All: Wait for response to email and schedule another meeting after to discuss the feedback 
+
+15th Mar - All: Get set up with the environment
+	- Owen Burke: A*
+	- Conor Heffernan : Hamiltonian solver
+	- Aaron Duggan : Deep Q-Learning
+	- Thomas Kelly & Conor McNally: Genetic Algorithms
