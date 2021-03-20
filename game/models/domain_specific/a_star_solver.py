@@ -5,6 +5,7 @@ from game.helpers.queue import Queue
 from game.models.base_game_model import BaseGameModel
 from game.helpers.priority_queue import PriorityQueue
 from game.environment.environment import Environment
+from math import sqrt
 
 
 class AStarSolver(BaseGameModel):
@@ -41,7 +42,17 @@ class AStarSolver(BaseGameModel):
                     if neighbor == Tile.empty or neighbor == Tile.fruit:
                         child_node = Node(child_node_point, action, previous_node=current_node)
                         if child_node.point not in point_to_running_weight:
-                            queue.push(child_node, point_to_running_weight[current_node.point] + 1 + heuristic)
+                            queue.push(child_node, point_to_running_weight[current_node.point] + 1 +
+                                       AStarSolver.heuristic_func(child_node.point, fruit_node.point))
                             point_to_running_weight[child_node.point] = point_to_running_weight[current_node.point] + 1
         return []
 
+    @staticmethod
+    def heuristic_func(current_point: Point, end_point: Point):
+        """
+        Simple Euclidean distance
+        :param current_point: current point of snake's head
+        :param end_point: point of fruit
+        :return:
+        """
+        return sqrt(((end_point.x - current_point.x) ** 2) + ((end_point.y - current_point.y) ** 2))
