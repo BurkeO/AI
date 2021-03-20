@@ -2,6 +2,7 @@ import argparse
 import random
 
 from game.helpers.constants import Constants
+from game.models.domain_specific.a_star_solver import AStarSolver
 from game.models.domain_specific.dnn_ai_solver import DNNSolver, DNNTrainer
 from game.models.domain_specific.dnn_genetic_evolution_ai_solver import DNNGeneticEvolutionSolver, \
     DNNGeneticEvolutionTrainer
@@ -20,6 +21,7 @@ solvers = [RandomSolver(),
            MonteCarloSolver(),
            ShortestPathBFSSolver(),
            ShortestPathDFSSolver(),
+           AStarSolver(),
            LongestPathSolver(),
            HamiltonSolver(),
            DNNSolver(),

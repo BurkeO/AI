@@ -36,7 +36,7 @@ class BaseGameModel:
                 pass
         scores_file = open(path, "a")
         with scores_file:
-            writer = csv.writer(scores_file)
+            writer = csv.writer(scores_file, lineterminator='\n')
             writer.writerow([score])
         self._save_png(path, "runs", "scores")
 
