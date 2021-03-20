@@ -21,7 +21,6 @@ Table of Contents
         * [Random](#random)
         * [Monte Carlo](#monte-carlo)
         * [DNN Genetic Evolution](#dnn-genetic-evolution)
-  * [Work in progress](#work-in-progress)
 
 ## Usage
 
