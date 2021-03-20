@@ -45,25 +45,3 @@ class AStarSolver(BaseGameModel):
                             point_to_running_weight[child_node.point] = point_to_running_weight[current_node.point] + 1
         return []
 
-
-        # queue = Queue([starting_node])
-        # visited_nodes = {starting_node}
-        # shortest_path = []
-        # while queue.queue:
-        #     current_node = queue.dequeue()
-        #     if current_node == fruit_node:
-        #         shortest_path = self._recreate_path_for_node(current_node)
-        #         break
-        #     for action in environment.possible_actions_for_current_action(current_node.action):
-        #         child_node_point = Point(current_node.point.x + action[0], current_node.point.y + action[1])
-        #         neighbor = environment.tiles[child_node_point.y][child_node_point.x]
-        #         if neighbor == Tile.empty or neighbor == Tile.fruit:
-        #             child_node = Node(child_node_point, action, previous_node=current_node)
-        #             if child_node not in visited_nodes and child_node not in queue.queue:
-        #                 visited_nodes.add(current_node)
-        #                 queue.enqueue(child_node)
-        # if shortest_path:
-        #     return shortest_path
-        # else:
-        #     return []
-
