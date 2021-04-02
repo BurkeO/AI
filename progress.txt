@@ -10,4 +10,5 @@
 	report, just to get things going while we implement the algorithms. Next thing to do is get everyone set up with the environment and start implementing the algorithms.
 
 
-	
+2nd April - Initial version of algorithms are implmented, but we still need to make alterations to the environment (i.e adding new fruit etc), 
+	and as a result we will need to update these algorithms to reflect these changes

@@ -5,3 +5,6 @@
 	- Conor Heffernan : Hamiltonian solver
 	- Aaron Duggan : Deep Q-Learning
 	- Thomas Kelly & Conor McNally: Genetic Algorithms
+
+2nd April - All : Make alterations to the environment, ie adding new/different kinds of fruit, time aspects to score, etc	
+				and adjust our algorithms from the last meeting to suit
