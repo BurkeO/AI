@@ -41,6 +41,10 @@ def args():
     parser.add_argument("-f", "--fruit", help="number of normal fruit on screen", default=1, type=int)
     parser.add_argument("-w", "--width", help="The width of the screen (default 300)", type=int)
     parser.add_argument("-t", "--height", help="The height of the screen (default 300)", type=int)
+    parser.add_argument("-c", "--chance", help="The chance of every new fruit spawning as a special fruit (0 - 1)",
+                        type=float, default=0)
+    parser.add_argument("-b", "--boost", help="The number of blocks that snake grows by on a special fruit", type=int,
+                        default=1)
     for game_model in game_models:
         parser.add_argument("-" + game_model.abbreviation, "--" + game_model.short_name,
                             help=game_model.long_name,
@@ -58,11 +62,14 @@ if __name__ == '__main__':
         selected_game_model.move(selected_game_model.prepare_training_environment())
     else:
         from game.game import Game
-
+        if args.chance > 1 or args.chance < 0:
+            raise ValueError("Invalid value for chance argument")
         Game(game_model=selected_game_model,
              fps=Constants.FPS,
              pixel_size=Constants.PIXEL_SIZE,
              screen_width=args.width if args.width is not None else Constants.SCREEN_WIDTH,
              screen_height=(args.height if args.height is not None else Constants.SCREEN_HEIGHT) + Constants.NAVIGATION_BAR_HEIGHT,
              navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT,
-             number_of_fruit=args.fruit)
+             number_of_fruit=args.fruit,
+             special_chance=args.chance,
+             special_boost=args.boost)

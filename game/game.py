@@ -20,7 +20,7 @@ class Game:
     stats = ""
 
     def __init__(self, game_model, fps, pixel_size, screen_width, screen_height, navigation_bar_height,
-                 number_of_fruit):
+                 number_of_fruit, special_chance, special_boost):
         self.model = game_model
 
         self.stats = self.model.stats()
@@ -32,8 +32,9 @@ class Game:
         self.horizontal_pixels = int(screen_width / pixel_size)
         self.vertical_pixels = int((screen_height - navigation_bar_height) / pixel_size)
 
-        self.environment = Environment(width=self.horizontal_pixels,
-                                       height=self.vertical_pixels, number_of_fruit=number_of_fruit)
+        self.environment = Environment(width=self.horizontal_pixels, height=self.vertical_pixels,
+                                       number_of_fruit=number_of_fruit, special_chance=special_chance,
+                                       special_boost=special_boost)
 
         self.wall = WallScreenObject(self)
         self.wall.points = [self._screen_normalized_point(x) for x in self.environment.set_wall()]
@@ -95,7 +96,8 @@ class Game:
         pygame.display.update()
 
     def _screen_normalized_point(self, point):
-        return Point(point.x * self.pixel_size, self.navigation_bar_height + (point.y * self.pixel_size))
+        return Point(point.x * self.pixel_size, self.navigation_bar_height + (point.y * self.pixel_size),
+                     is_special=point.is_special)
 
     def _handle_user_input(self):
         for event in pygame.event.get():

@@ -7,6 +7,7 @@ from game.environment.action import Action
 from game.environment.tile import Tile
 from game.helpers.constants import Constants
 from game.helpers.point import Point
+from random import uniform
 
 
 class Environment:
@@ -18,12 +19,15 @@ class Environment:
     snake_length = 1
     snake_action = None
 
-    def __init__(self, width=Constants.ENV_WIDTH, height=Constants.ENV_HEIGHT, number_of_fruit=1):
+    def __init__(self, width=Constants.ENV_WIDTH, height=Constants.ENV_HEIGHT, number_of_fruit=1, special_chance=0,
+                 special_boost=1):
         self.width = width
         self.height = height
         self.tiles = []
         self.number_of_fruit = number_of_fruit
         self.frames = []
+        self.special_chance = special_chance
+        self.special_boost = special_boost
         for y in range(0, self.height):
             self.tiles.append([])
             for x in range(0, self.width):
@@ -95,7 +99,11 @@ class Environment:
 
     def eat_fruit_if_possible(self):
         if self.snake[0] in self.fruit:
-            self.snake_length += 1
+            list_index = self.fruit.index(self.snake[0])
+            if self.fruit[list_index].is_special:
+                self.snake_length += self.special_boost
+            else:
+                self.snake_length += 1
             self.snake_moves = 0
             if self._is_winning():
                 return True
@@ -113,12 +121,15 @@ class Environment:
         return self.wall
 
     def set_fruit(self):
-        # self._clear_environment_for(Tile.fruit)
-        # Set 2 Fruit
         for i in range(len(self.fruit), self.number_of_fruit):
             random_position = self._random_available_position()
             self.tiles[random_position.x][random_position.y] = Tile.fruit
-        self.fruit = self._points_of(Tile.fruit)
+        for point in self._points_of(Tile.fruit):
+            if point not in self.fruit:
+                chance = uniform(0, 1)
+                if chance < self.special_chance:
+                    point.is_special = True
+                self.fruit.append(point)
         return self.fruit
 
     def set_snake(self):

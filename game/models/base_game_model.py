@@ -97,8 +97,7 @@ class BaseGameModel:
         return actions[best_prediction_index]
 
     def prepare_training_environment(self, horizontal_pixels=Constants.ENV_WIDTH, vertical_pixels=Constants.ENV_HEIGHT):
-        environment = Environment(width=horizontal_pixels,
-                                  height=vertical_pixels)
+        environment = Environment(width=horizontal_pixels, height=vertical_pixels)
         environment.set_wall()
         environment.set_fruit()
         environment.set_snake()
