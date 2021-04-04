@@ -14,7 +14,7 @@ class LongestPathSolver(BaseGameModel):
     def move(self, environment):
         BaseGameModel.move(self, environment)
 
-        longest_path = self.longest_path(self.starting_node, self.fruit_node, environment)
+        longest_path = self.longest_path(self.starting_node, self.fruit_nodes, environment)
 
         for index in range(0, len(longest_path)):
             node = longest_path[index]

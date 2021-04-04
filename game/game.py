@@ -19,20 +19,21 @@ class Game:
     model = None
     stats = ""
 
-    def __init__(self, game_model, fps, pixel_size, screen_width, screen_height, navigation_bar_height):
+    def __init__(self, game_model, fps, pixel_size, screen_width, screen_height, navigation_bar_height,
+                 number_of_fruit):
         self.model = game_model
 
         self.stats = self.model.stats()
         self.fps = fps
         self.pixel_size = pixel_size
         self.navigation_bar_height = navigation_bar_height
-        self.screen = pygame.display.set_mode((screen_width, screen_height), 0, Constants.SCREEN_DEPTH)
+        self.screen = pygame.display.set_mode((screen_width, screen_height), depth=Constants.SCREEN_DEPTH)
         self.surface = pygame.Surface(self.screen.get_size())
         self.horizontal_pixels = int(screen_width / pixel_size)
         self.vertical_pixels = int((screen_height - navigation_bar_height) / pixel_size)
 
         self.environment = Environment(width=self.horizontal_pixels,
-                                       height=self.vertical_pixels)
+                                       height=self.vertical_pixels, number_of_fruit=number_of_fruit)
 
         self.wall = WallScreenObject(self)
         self.wall.points = [self._screen_normalized_point(x) for x in self.environment.set_wall()]

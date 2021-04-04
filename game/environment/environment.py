@@ -18,10 +18,11 @@ class Environment:
     snake_length = 1
     snake_action = None
 
-    def __init__(self, width=Constants.ENV_WIDTH, height=Constants.ENV_HEIGHT):
+    def __init__(self, width=Constants.ENV_WIDTH, height=Constants.ENV_HEIGHT, number_of_fruit=1):
         self.width = width
         self.height = height
         self.tiles = []
+        self.number_of_fruit = number_of_fruit
         self.frames = []
         for y in range(0, self.height):
             self.tiles.append([])
@@ -93,11 +94,12 @@ class Environment:
         return actions
 
     def eat_fruit_if_possible(self):
-        if self.fruit[0] == self.snake[0]:
+        if self.snake[0] in self.fruit:
             self.snake_length += 1
             self.snake_moves = 0
             if self._is_winning():
                 return True
+            self.remove_fruit(self.snake[0])
             self.set_fruit()
             return True
         return False
@@ -111,9 +113,11 @@ class Environment:
         return self.wall
 
     def set_fruit(self):
-        self._clear_environment_for(Tile.fruit)
-        random_position = self._random_available_position()
-        self.tiles[random_position.x][random_position.y] = Tile.fruit
+        # self._clear_environment_for(Tile.fruit)
+        # Set 2 Fruit
+        for i in range(len(self.fruit), self.number_of_fruit):
+            random_position = self._random_available_position()
+            self.tiles[random_position.x][random_position.y] = Tile.fruit
         self.fruit = self._points_of(Tile.fruit)
         return self.fruit
 
@@ -208,3 +212,7 @@ class Environment:
 
     def _is_winning(self):
         return self.reward() == self._available_tiles_count()
+
+    def remove_fruit(self, point):
+        self.tiles[point.y][point.x] = Tile.empty
+        self.fruit.remove(self.snake[0])

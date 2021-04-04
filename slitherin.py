@@ -38,6 +38,7 @@ game_models = solvers + trainers
 
 def args():
     parser = argparse.ArgumentParser()
+    parser.add_argument("-f", "--fruit", help="number of normal fruit on screen", default=1, type=int)
     for game_model in game_models:
         parser.add_argument("-" + game_model.abbreviation, "--" + game_model.short_name,
                             help=game_model.long_name,
@@ -61,4 +62,5 @@ if __name__ == '__main__':
              pixel_size=Constants.PIXEL_SIZE,
              screen_width=Constants.SCREEN_WIDTH,
              screen_height=Constants.SCREEN_HEIGHT + Constants.NAVIGATION_BAR_HEIGHT,
-             navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT)
+             navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT,
+             number_of_fruit=args.fruit)

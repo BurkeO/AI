@@ -13,13 +13,13 @@ class ShortestPathBFSSolver(BaseGameModel):
     def move(self, environment):
         BaseGameModel.move(self, environment)
         shortest_path_move_from_transposition_table = self._path_move_from_transposition_table(self.starting_node,
-                                                                                               self.fruit_node)
+                                                                                               self.fruit_nodes)
         if shortest_path_move_from_transposition_table:
             return shortest_path_move_from_transposition_table
 
-        shortest_path = self.shortest_path(environment, self.starting_node, self.fruit_node)
+        shortest_path = self.shortest_path(environment, self.starting_node, self.fruit_nodes)
         if shortest_path:
-            self.transposition_table[self.fruit_node] = shortest_path
+            self.transposition_table[self.fruit_nodes] = shortest_path
             first_point = shortest_path[-2]
             return first_point.action
         return environment.snake_action

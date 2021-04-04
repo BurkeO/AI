@@ -14,7 +14,7 @@ class ShortestPathDFSSolver(BaseGameModel):
         BaseGameModel.move(self, environment)
 
         shortest_path_move_from_transposition_table = self._path_move_from_transposition_table(self.starting_node,
-                                                                                               self.fruit_node)
+                                                                                               self.fruit_nodes)
         if shortest_path_move_from_transposition_table:
             return shortest_path_move_from_transposition_table
 
@@ -23,7 +23,7 @@ class ShortestPathDFSSolver(BaseGameModel):
         shortest_path = []
         while stack.stack:
             current_node = stack.pop()
-            if current_node == self.fruit_node:
+            if current_node == self.fruit_nodes:
                 shortest_path = self._recreate_path_for_node(current_node)
             for action in environment.possible_actions_for_current_action(current_node.action):
                 child_node_point = current_node.point.move(action)
@@ -37,7 +37,7 @@ class ShortestPathDFSSolver(BaseGameModel):
                         stack.push(child_node)
 
         if shortest_path:
-            self.transposition_table[self.fruit_node] = shortest_path
+            self.transposition_table[self.fruit_nodes] = shortest_path
             first_point = shortest_path[-2]
             return first_point.action
         return environment.snake_action

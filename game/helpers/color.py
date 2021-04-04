@@ -4,3 +4,4 @@ class Color:
     green = (0, 150, 0)
     white = (255, 255, 255)
     gray = (211, 211, 211)
+    gold = (255, 215, 0)

@@ -24,7 +24,7 @@ class BaseGameModel:
     def move(self, environment):
         self.starting_node = Node(environment.snake[0])
         self.starting_node.action = environment.snake_action
-        self.fruit_node = Node(environment.fruit[0])
+        self.fruit_nodes = [Node(fruit_point) for fruit_point in environment.fruit]
 
     def user_input(self, event):
         pass
@@ -80,7 +80,7 @@ class BaseGameModel:
         plt.xlabel(x_label)
         plt.ylabel(y_label)
 
-        plt.legend(loc="upper LEFT")
+        plt.legend(loc="upper left")
         plt.savefig("scores/" + self.short_name + ".png", bbox_inches="tight")
         plt.close()
 

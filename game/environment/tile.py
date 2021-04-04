@@ -1,7 +1,8 @@
 import numpy as np
+from enum import Enum
 
 
-class Tile:
+class Tile(Enum):
     empty = " "
     snake = "x"
     fruit = "$"
