@@ -1,7 +1,6 @@
 from game.environment.tile import Tile
 from game.helpers.node import Node
 from game.helpers.point import Point
-from game.helpers.queue import Queue
 from game.models.base_game_model import BaseGameModel
 from game.helpers.priority_queue import PriorityQueue
 from game.environment.environment import Environment
@@ -36,7 +35,7 @@ class AStarSolver(BaseGameModel):
             if current_node == fruit_node:
                 return self._recreate_path_for_node(current_node)
             for action in environment.possible_actions_for_current_action(current_node.action):
-                child_node_point = Point(current_node.point.x + action[0], current_node.point.y + action[1])
+                child_node_point = current_node.point.move(action)
                 if child_node_point not in point_to_running_weight or child_node_point == fruit_node.point:
                     neighbor = environment.tiles[child_node_point.y][child_node_point.x]
                     if neighbor == Tile.empty or neighbor == Tile.fruit:

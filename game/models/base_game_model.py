@@ -80,7 +80,7 @@ class BaseGameModel:
         plt.xlabel(x_label)
         plt.ylabel(y_label)
 
-        plt.legend(loc="upper left")
+        plt.legend(loc="upper LEFT")
         plt.savefig("scores/" + self.short_name + ".png", bbox_inches="tight")
         plt.close()
 

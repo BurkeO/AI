@@ -36,15 +36,13 @@ class Environment:
         state = self.state()
         return state, reward, terminal
 
-    def step(self, action):
+    def step(self, action: Action):
         if Action.is_reverse(self.snake_action, action):
             # print "Forbidden reverse action attempt!"
             return
         self.snake_action = action
         head = self.snake[0]
-        x, y = self.snake_action
-        new = Point(x=(head.x + x),
-                    y=(head.y + y))
+        new = head.move(self.snake_action)
         if new in self.snake:
             # print "Hit snake"
             return False
@@ -77,12 +75,12 @@ class Environment:
     def observation(self, new_action):
         head = self.snake[0]
         left_neighbor_action = Action.left_neighbor(self.snake_action)
-        left_neighbor_point = Point(head.x + left_neighbor_action[0], head.y + left_neighbor_action[1])
+        left_neighbor_point = head.move(left_neighbor_action)
         left_neighbor_accessible = self._is_point_accessible(left_neighbor_point)
-        top_neighbor_point = Point(head.x + self.snake_action[0], head.y + self.snake_action[1])
+        top_neighbor_point = head.move(self.snake_action)
         top_neighbor_accessible = self._is_point_accessible(top_neighbor_point)
         right_neighbor_action = Action.right_neighbor(self.snake_action)
-        right_neighbor_point = Point(head.x + right_neighbor_action[0], head.y + right_neighbor_action[1])
+        right_neighbor_point = head.move(right_neighbor_action)
         right_point_accessible = self._is_point_accessible(right_neighbor_point)
         action_vector = Action.vector(self.snake_action, new_action)
         return [action_vector, left_neighbor_accessible, top_neighbor_accessible, right_point_accessible,
@@ -90,7 +88,7 @@ class Environment:
 
     def possible_actions_for_current_action(self, current_action):
         actions = Action.all()
-        reverse_action = (current_action[0] * -1, current_action[1] * -1)
+        reverse_action = Action.get_reverse(current_action)
         actions.remove(reverse_action)
         return actions
 

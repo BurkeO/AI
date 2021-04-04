@@ -34,7 +34,7 @@ class ShortestPathBFSSolver(BaseGameModel):
                 shortest_path = self._recreate_path_for_node(current_node)
                 break
             for action in environment.possible_actions_for_current_action(current_node.action):
-                child_node_point = Point(current_node.point.x + action[0], current_node.point.y + action[1])
+                child_node_point = current_node.point.move(action)
                 neighbor = environment.tiles[child_node_point.y][child_node_point.x]
                 if neighbor == Tile.empty or neighbor == Tile.fruit:
                     child_node = Node(child_node_point)

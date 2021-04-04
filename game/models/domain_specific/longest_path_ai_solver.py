@@ -41,7 +41,7 @@ class LongestPathSolver(BaseGameModel):
 
             rotated_actions = [Action.left_neighbor(b.action), Action.right_neighbor(b.action)]
             for rotated_action in rotated_actions:
-                inverse_a_action = (a.action[0] * -1, a.action[1] * -1)
+                inverse_a_action = Action.get_reverse(a.action)
                 if rotated_action == inverse_a_action:
                     continue
                 rotated_neighbor = self._neighbor(a, rotated_action, environment)
@@ -70,8 +70,7 @@ class LongestPathSolver(BaseGameModel):
         return path
 
     def _neighbor(self, node, action, environment):
-        neighbor_point = Point(node.point.x + action[0],
-                               node.point.y + action[1])
+        neighbor_point = node.point.move(action)
         neighbor_tile = environment.tiles[neighbor_point.y][neighbor_point.x]
         if neighbor_tile == Tile.empty or neighbor_tile == Tile.fruit:
             neighbor_node = Node(neighbor_point)

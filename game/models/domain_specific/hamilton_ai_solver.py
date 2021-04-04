@@ -1,3 +1,4 @@
+from game.environment.action import Action
 from game.helpers.node import Node
 from game.helpers.point import Point
 from game.models.base_game_model import BaseGameModel
@@ -32,9 +33,9 @@ class HamiltonSolver(BaseGameModel):
 
     def _hamilton_path(self, environment):
         head = self.starting_node
-        inverse_snake_action = (environment.snake_action[0] * -1, environment.snake_action[1] * -1)
+        inverse_snake_action = Action.get_reverse(environment.snake_action)
         tail = environment.snake[-1]
-        tail_point = Point(tail.x + inverse_snake_action[0], tail.y + inverse_snake_action[1])
+        tail_point = tail.move(inverse_snake_action)
         tail = Node(tail_point)
         if self.hamilton_path:
             return self.hamilton_path
