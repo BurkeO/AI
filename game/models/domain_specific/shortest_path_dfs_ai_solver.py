@@ -25,12 +25,12 @@ class ShortestPathDFSSolver(BaseGameModel):
             current_node = stack.pop()
             if current_node == self.fruit_node:
                 shortest_path = self._recreate_path_for_node(current_node)
-            for move in environment.possible_actions_for_current_action(current_node.action):
-                child_node_point = Point(current_node.point.x + move[0], current_node.point.y + move[1])
+            for action in environment.possible_actions_for_current_action(current_node.action):
+                child_node_point = current_node.point.move(action)
                 neighbor = environment.tiles[child_node_point.y][child_node_point.x]
                 if neighbor == Tile.empty or neighbor == Tile.fruit:
                     child_node = Node(child_node_point)
-                    child_node.action = move
+                    child_node.action = action
                     child_node.previous_node = current_node
                     if child_node not in visited_nodes and child_node not in stack.stack:
                         visited_nodes.add(current_node)
