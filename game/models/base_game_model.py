@@ -24,7 +24,7 @@ class BaseGameModel:
     def move(self, environment):
         self.starting_node = Node(environment.snake[0])
         self.starting_node.action = environment.snake_action
-        self.fruit_node = Node(environment.fruit[0])
+        self.fruit_nodes = [Node(fruit_point) for fruit_point in environment.fruit]
 
     def user_input(self, event):
         pass
@@ -97,8 +97,7 @@ class BaseGameModel:
         return actions[best_prediction_index]
 
     def prepare_training_environment(self, horizontal_pixels=Constants.ENV_WIDTH, vertical_pixels=Constants.ENV_HEIGHT):
-        environment = Environment(width=horizontal_pixels,
-                                  height=vertical_pixels)
+        environment = Environment(width=horizontal_pixels, height=vertical_pixels)
         environment.set_wall()
         environment.set_fruit()
         environment.set_snake()

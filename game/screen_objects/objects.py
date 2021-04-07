@@ -4,17 +4,19 @@ from game.helpers.color import Color
 class ScreenObject:
     points = []
 
-    def __init__(self, game, color):
+    def __init__(self, game, color, special_colour=Color.gold):
         from game.game import Game
         if isinstance(game, Game):
             self.game = game
             self.color = color
+            self.special_colour = special_colour
         else:
             raise Exception("Pass valid Game object to the constructor")
 
     def draw(self, surface):
         for point in self.points:
-            self.game.draw_pixel(surface, self.color, point)
+            colour = self.special_colour if point.is_special else self.color
+            self.game.draw_pixel(surface, colour, point)
 
 
 class SnakeScreenObject(ScreenObject):

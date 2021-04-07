@@ -1,39 +1,48 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
 
+
+from enum import Enum
 import math
 
 
-class Action():
-    left = (-1, 0)
-    up = (0, -1)
-    right = (1, 0)
-    down = (0, 1)
-
-    def __eq__(self, other):
-        return self[0] == other[0] and self[1] == other[1]
+class Action(Enum):
+    LEFT = (-1, 0)
+    UP = (0, -1)
+    RIGHT = (1, 0)
+    DOWN = (0, 1)
 
     @staticmethod
     def description(action):
-        if action == Action.up:
+        if action == Action.UP:
             return "↑"
-        elif action == Action.down:
+        elif action == Action.DOWN:
             return "↓"
-        elif action == Action.left:
+        elif action == Action.LEFT:
             return "←"
         else:
             return "→"
 
     @staticmethod
+    def get_reverse(action: 'Action'):
+        switcher = {
+            Action.LEFT: Action.RIGHT,
+            Action.RIGHT: Action.LEFT,
+            Action.UP: Action.DOWN,
+            Action.DOWN: Action.UP
+        }
+        return switcher[action]
+
+    @staticmethod
     def is_reverse(current_action, new_action):
-        inverse_action = (current_action[0] * -1, current_action[1] * -1)
+        inverse_action = Action.get_reverse(current_action)
         return new_action == inverse_action
 
     @staticmethod
     def action_from_vector(vector):
         return Action.possible()[vector]
 
-    @staticmethod  # So that turning left is -1, forward is 0 and turning right is 1
+    @staticmethod  # So that turning LEFT is -1, forward is 0 and turning RIGHT is 1
     def vector(start, end):
         start_index = Action.all().index(start)
         end_index = Action.all().index(end)
@@ -66,28 +75,28 @@ class Action():
 
     @staticmethod
     def adjusted_angles(action):
-        if action == Action.up:
+        if action == Action.UP:
             return math.pi / 2, math.pi * 3 / 2
-        elif action == Action.left:
+        elif action == Action.LEFT:
             return math.pi, math.pi
-        elif action == Action.down:
+        elif action == Action.DOWN:
             return math.pi * 3 / 2, math.pi / 2
         else:
-            return 0, 0  # Angle is by default calculated according to the Action.right
+            return 0, 0  # Angle is by default calculated according to the Action.RIGHT
 
     @staticmethod
     def normalized_action(current_action, new_action):
-        if new_action == Action.left:
+        if new_action == Action.LEFT:
             return Action.left_neighbor(current_action)
-        elif new_action == Action.right:
+        elif new_action == Action.RIGHT:
             return Action.right_neighbor(current_action)
         else:
             return current_action
 
     @staticmethod
     def possible():
-        return [Action.left, Action.up, Action.right]
+        return [Action.LEFT, Action.UP, Action.RIGHT]
 
     @staticmethod
     def all():
-        return [Action.left, Action.up, Action.right, Action.down]
+        return [Action.LEFT, Action.UP, Action.RIGHT, Action.DOWN]

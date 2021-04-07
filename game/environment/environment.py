@@ -7,6 +7,7 @@ from game.environment.action import Action
 from game.environment.tile import Tile
 from game.helpers.constants import Constants
 from game.helpers.point import Point
+from random import uniform
 
 
 class Environment:
@@ -18,11 +19,15 @@ class Environment:
     snake_length = 1
     snake_action = None
 
-    def __init__(self, width=Constants.ENV_WIDTH, height=Constants.ENV_HEIGHT):
+    def __init__(self, width=Constants.ENV_WIDTH, height=Constants.ENV_HEIGHT, number_of_fruit=1, special_chance=0,
+                 special_boost=1):
         self.width = width
         self.height = height
         self.tiles = []
+        self.number_of_fruit = number_of_fruit
         self.frames = []
+        self.special_chance = special_chance
+        self.special_boost = special_boost
         for y in range(0, self.height):
             self.tiles.append([])
             for x in range(0, self.width):
@@ -36,15 +41,13 @@ class Environment:
         state = self.state()
         return state, reward, terminal
 
-    def step(self, action):
+    def step(self, action: Action):
         if Action.is_reverse(self.snake_action, action):
             # print "Forbidden reverse action attempt!"
             return
         self.snake_action = action
         head = self.snake[0]
-        x, y = self.snake_action
-        new = Point(x=(head.x + x),
-                    y=(head.y + y))
+        new = head.move(self.snake_action)
         if new in self.snake:
             # print "Hit snake"
             return False
@@ -77,12 +80,12 @@ class Environment:
     def observation(self, new_action):
         head = self.snake[0]
         left_neighbor_action = Action.left_neighbor(self.snake_action)
-        left_neighbor_point = Point(head.x + left_neighbor_action[0], head.y + left_neighbor_action[1])
+        left_neighbor_point = head.move(left_neighbor_action)
         left_neighbor_accessible = self._is_point_accessible(left_neighbor_point)
-        top_neighbor_point = Point(head.x + self.snake_action[0], head.y + self.snake_action[1])
+        top_neighbor_point = head.move(self.snake_action)
         top_neighbor_accessible = self._is_point_accessible(top_neighbor_point)
         right_neighbor_action = Action.right_neighbor(self.snake_action)
-        right_neighbor_point = Point(head.x + right_neighbor_action[0], head.y + right_neighbor_action[1])
+        right_neighbor_point = head.move(right_neighbor_action)
         right_point_accessible = self._is_point_accessible(right_neighbor_point)
         action_vector = Action.vector(self.snake_action, new_action)
         return [action_vector, left_neighbor_accessible, top_neighbor_accessible, right_point_accessible,
@@ -90,16 +93,21 @@ class Environment:
 
     def possible_actions_for_current_action(self, current_action):
         actions = Action.all()
-        reverse_action = (current_action[0] * -1, current_action[1] * -1)
+        reverse_action = Action.get_reverse(current_action)
         actions.remove(reverse_action)
         return actions
 
     def eat_fruit_if_possible(self):
-        if self.fruit[0] == self.snake[0]:
-            self.snake_length += 1
+        if self.snake[0] in self.fruit:
+            list_index = self.fruit.index(self.snake[0])
+            if self.fruit[list_index].is_special:
+                self.snake_length += self.special_boost
+            else:
+                self.snake_length += 1
             self.snake_moves = 0
             if self._is_winning():
                 return True
+            self.remove_fruit(self.snake[0])
             self.set_fruit()
             return True
         return False
@@ -113,10 +121,15 @@ class Environment:
         return self.wall
 
     def set_fruit(self):
-        self._clear_environment_for(Tile.fruit)
-        random_position = self._random_available_position()
-        self.tiles[random_position.x][random_position.y] = Tile.fruit
-        self.fruit = self._points_of(Tile.fruit)
+        for i in range(len(self.fruit), self.number_of_fruit):
+            random_position = self._random_available_position()
+            self.tiles[random_position.x][random_position.y] = Tile.fruit
+        for point in self._points_of(Tile.fruit):
+            if point not in self.fruit:
+                chance = uniform(0, 1)
+                if chance < self.special_chance:
+                    point.is_special = True
+                self.fruit.append(point)
         return self.fruit
 
     def set_snake(self):
@@ -210,3 +223,7 @@ class Environment:
 
     def _is_winning(self):
         return self.reward() == self._available_tiles_count()
+
+    def remove_fruit(self, point):
+        self.tiles[point.y][point.x] = Tile.empty
+        self.fruit.remove(self.snake[0])
