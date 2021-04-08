@@ -50,7 +50,7 @@ class BaseGameModel:
         scores_file = open(path, "a")
         with scores_file:
             writer = csv.writer(scores_file)
-            writer.writerow([self.test_case, score])
+            writer.writerow([str(self.test_case), score])
 
     def stats(self):
         path = "scores/" + self.short_name + ".csv"

@@ -64,7 +64,7 @@ class Game:
             self._draw_screen()
             self._display()
         
-        self.model.log_test_score(self.model.test_case, self.model.final_avg)
+        self.model.log_test_score(self.model.final_avg)
 
 
     def draw_pixel(self, surf, color, point):
