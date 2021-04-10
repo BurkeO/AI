@@ -5,8 +5,6 @@
 from enum import Enum
 import math
 
-def isTuple(action):
-    return type(action) == type ((0,0))
 
 
 class Action(Enum):
@@ -38,20 +36,12 @@ class Action(Enum):
 
     @staticmethod
     def get_reverse(action: 'Action'):
-        if not isTuple(action):
-            switcher = {
-                Action.LEFT: Action.RIGHT,
-                Action.RIGHT: Action.LEFT,
-                Action.UP: Action.DOWN,
-                Action.DOWN: Action.UP
-            }
-        else:
-            switcher = {
-                Action.LEFT.value: Action.RIGHT,
-                Action.RIGHT.value: Action.LEFT,
-                Action.UP.value: Action.DOWN,
-                Action.DOWN.value: Action.UP
-            }
+        switcher = {
+            Action.LEFT: Action.RIGHT,
+            Action.RIGHT: Action.LEFT,
+            Action.UP: Action.DOWN,
+            Action.DOWN: Action.UP
+        }
         return switcher[action]
 
     @staticmethod
@@ -90,18 +80,12 @@ class Action(Enum):
     def _neighbor(action, actions):
         actions_count = len(actions)
         for i in range(0, actions_count):
-            if not isTuple(action):
-                if actions[i].value == action.value:
-                    if i == actions_count - 1:
-                        return actions[0]
-                    else:
-                        return actions[i + 1]
-            else:
-                if actions[i].value == action:
-                    if i == actions_count - 1:
-                        return actions[0]
-                    else:
-                        return actions[i + 1]
+            if actions[i].value == action.value:
+                if i == actions_count - 1:
+                    return actions[0]
+                else:
+                    return actions[i + 1]
+
 
     @staticmethod
     def adjusted_angles(action):
