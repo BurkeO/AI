@@ -59,7 +59,7 @@ class LongestPathSolver(BaseGameModel):
                 path.insert(index + 2, y)
 
                 b = path[index + 3]
-                b.action = (b.point.x - y.point.x, b.point.y - y.point.y)
+                b.action = Action.tupleToAction((b.point.x - y.point.x, b.point.y - y.point.y))
                 path[index + 3] = b
                 continue
 

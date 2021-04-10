@@ -5,12 +5,25 @@
 from enum import Enum
 import math
 
+def isTuple(action):
+    return type(action) == type ((0,0))
+
 
 class Action(Enum):
     LEFT = (-1, 0)
     UP = (0, -1)
     RIGHT = (1, 0)
     DOWN = (0, 1)
+
+    @staticmethod
+    def tupleToAction(tuple):
+        if tuple[0] == -1:
+            return Action.LEFT
+        elif tuple[0] == 1:
+            return Action.RIGHT
+        elif tuple[1] == -1:
+            return Action.UP
+        return Action.DOWN
 
     @staticmethod
     def description(action):
@@ -25,12 +38,20 @@ class Action(Enum):
 
     @staticmethod
     def get_reverse(action: 'Action'):
-        switcher = {
-            Action.LEFT: Action.RIGHT,
-            Action.RIGHT: Action.LEFT,
-            Action.UP: Action.DOWN,
-            Action.DOWN: Action.UP
-        }
+        if not isTuple(action):
+            switcher = {
+                Action.LEFT: Action.RIGHT,
+                Action.RIGHT: Action.LEFT,
+                Action.UP: Action.DOWN,
+                Action.DOWN: Action.UP
+            }
+        else:
+            switcher = {
+                Action.LEFT.value: Action.RIGHT,
+                Action.RIGHT.value: Action.LEFT,
+                Action.UP.value: Action.DOWN,
+                Action.DOWN.value: Action.UP
+            }
         return switcher[action]
 
     @staticmethod
@@ -63,15 +84,24 @@ class Action(Enum):
         actions = Action.all()
         return Action._neighbor(action, actions)
 
+
+
     @staticmethod
     def _neighbor(action, actions):
         actions_count = len(actions)
         for i in range(0, actions_count):
-            if actions[i] == action:
-                if i == actions_count - 1:
-                    return actions[0]
-                else:
-                    return actions[i + 1]
+            if not isTuple(action):
+                if actions[i].value == action.value:
+                    if i == actions_count - 1:
+                        return actions[0]
+                    else:
+                        return actions[i + 1]
+            else:
+                if actions[i].value == action:
+                    if i == actions_count - 1:
+                        return actions[0]
+                    else:
+                        return actions[i + 1]
 
     @staticmethod
     def adjusted_angles(action):
