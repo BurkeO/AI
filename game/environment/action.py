@@ -6,11 +6,22 @@ from enum import Enum
 import math
 
 
+
 class Action(Enum):
     LEFT = (-1, 0)
     UP = (0, -1)
     RIGHT = (1, 0)
     DOWN = (0, 1)
+
+    @staticmethod
+    def tupleToAction(tuple):
+        if tuple[0] == -1:
+            return Action.LEFT
+        elif tuple[0] == 1:
+            return Action.RIGHT
+        elif tuple[1] == -1:
+            return Action.UP
+        return Action.DOWN
 
     @staticmethod
     def description(action):
@@ -63,15 +74,18 @@ class Action(Enum):
         actions = Action.all()
         return Action._neighbor(action, actions)
 
+
+
     @staticmethod
     def _neighbor(action, actions):
         actions_count = len(actions)
         for i in range(0, actions_count):
-            if actions[i] == action:
+            if actions[i].value == action.value:
                 if i == actions_count - 1:
                     return actions[0]
                 else:
                     return actions[i + 1]
+
 
     @staticmethod
     def adjusted_angles(action):
