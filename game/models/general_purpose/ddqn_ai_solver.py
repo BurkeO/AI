@@ -2,6 +2,7 @@ import os
 import random
 import shutil
 from statistics import mean
+from datetime import datetime
 
 import numpy as np
 
@@ -79,7 +80,7 @@ class DDQNTrainer(BaseDDQNGameModel):
         self.ddqn_target = DDQNModel(self.model_input_shape, self.action_space).model
         self.memory = []
         self.epsilon = EXPLORATION_MAX
-        self.score_output_path = "ddqn_avg_scores_" + str(Constants.ENV_HEIGHT) + ".csv"
+        self.score_output_path = "ddqn_avg_scores_" + str(Constants.ENV_HEIGHT) + "_" datetime.now().strftime('%Y_%m_%d_%H_%M_%S') + ".csv"
         self.total_runs = 0
 
     def move(self, environment):
