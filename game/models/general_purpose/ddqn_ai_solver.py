@@ -130,7 +130,8 @@ class DDQNTrainer(BaseDDQNGameModel):
                     break
 
     def _log_dqn_scores(self, avg_score):
-        output = str(self.total_runs) + "," + str(avg_score)
+        output = str(self.total_runs) + "," + str(avg_score) + "\n"
+        print(output)
         with open(self.score_output_path, "a") as myfile:
             myfile.write(output)
 
