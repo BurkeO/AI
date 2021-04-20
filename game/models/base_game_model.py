@@ -18,7 +18,7 @@ from pathlib import Path
 class BaseGameModel:
     transposition_table = {}
 
-    def __init__(self, long_name, short_name, abbreviation, test_name, test_case):
+    def __init__(self, long_name, short_name, abbreviation, test_name="", test_case=""):
         self.abbreviation = abbreviation
         self.long_name = long_name
         self.short_name = short_name
@@ -33,12 +33,13 @@ class BaseGameModel:
     def user_input(self, event):
         pass
 
-    def log_score(self, score):
+    def log_score(self, score, is_analysing=False):
         path = "scores/" + self.short_name + ".csv"
         with open(path, "a") as scores_file:
             writer = csv.writer(scores_file, lineterminator='\n')
             writer.writerow([score])
-        self._save_png(path, "runs", "scores")
+        if not is_analysing:
+            self._save_png(path, "runs", "scores")
 
     def log_test_score(self, score):
         path = "scores/" + self.short_name + "_" + self.test_name + ".csv"

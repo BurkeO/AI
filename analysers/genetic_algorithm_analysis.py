@@ -1,3 +1,5 @@
+import pygame
+
 from .analysis_parent import Analysis
 from game.game import Game
 from game.helpers.constants import Constants

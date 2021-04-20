@@ -49,18 +49,21 @@ class Game:
         self.screen_objects.append(self.snake)
 
         for _ in range(Constants.RUNS):
-            self._handle_user_input()
-            pygame.time.Clock().tick(fps)
-            self.environment.eat_fruit_if_possible()
-            ai_action = self.model.move(self.environment)
-            if not self.environment.step(ai_action):
-                self.model.reset()
-                self.model.log_score(self.environment.reward())
-                self.stats = self.model.stats()
-                self.environment.set_snake()
-            self._sync_screen_with_environment()
-            self._draw_screen()
-            self._display()
+            while True:
+                self._handle_user_input()
+                pygame.time.Clock().tick(fps)
+                self.environment.eat_fruit_if_possible()
+                ai_action = self.model.move(self.environment)
+                if not self.environment.step(ai_action):
+                    self.model.reset()
+                    # TODO set is_analysing arg
+                    self.model.log_score(self.environment.reward(), is_analysing=True)
+                    self.stats = self.model.stats()
+                    self.environment.set_snake()
+                    break
+                self._sync_screen_with_environment()
+                self._draw_screen()
+                self._display()
 
         self.model.log_test_score(self.model.final_avg)
 

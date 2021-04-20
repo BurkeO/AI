@@ -39,6 +39,7 @@ class AStarAnalyser(Analysis):
                  number_of_fruit=self.fruit,
                  special_chance=self.chance,
                  special_boost=self.boost)
+            os.remove("scores/" + game_model.short_name + ".csv")
 
         self._save_test_png(path, test_name, "screen size", "score")
 
@@ -64,6 +65,7 @@ class AStarAnalyser(Analysis):
                      number_of_fruit=fruit,
                      special_chance=1,
                      special_boost=boost)
+                os.remove("scores/" + game_model.short_name + ".csv")
 
         self._save_test_png_two(path, test_name, "fruit boost", "score", x_values, legend_values)
 
@@ -89,6 +91,7 @@ class AStarAnalyser(Analysis):
                      number_of_fruit=fruit,
                      special_chance=chance,
                      special_boost=2)
+                os.remove("scores/" + game_model.short_name + ".csv")
 
         self._save_test_png_two(path, test_name, "fruit chance", "score", x_values, legend_values)
 
@@ -103,7 +106,7 @@ class AStarAnalyser(Analysis):
             reader = csv.reader(scores)
             data = list(reader)
             for boost, score in data:
-                x_value_to_list[boost].append(score)
+                x_value_to_list[boost].append(float(score))
 
         for index, legend in enumerate(legend_values):
             values_list = []
@@ -111,14 +114,6 @@ class AStarAnalyser(Analysis):
                 values_list.append(y_list[index])
             plt.plot(x_values, values_list, label=f"count {legend}")
 
-
-
-
-        # plt.plot(x, count_1_list, label="count: 1")
-        # plt.plot(x, count_2_list, label="count: 2")
-        # plt.plot(x, count_3_list, label="count: 4")
-        # plt.plot(x, count_4_list, label="count: 8")
-        #
         plt.title(test_name)
         plt.xlabel(x_label)
         plt.ylabel(y_label)

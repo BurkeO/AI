@@ -12,7 +12,7 @@ from tf_models.dnn_model import DeepNeuralNetModel
 class DNNGeneticEvolutionSolver(BaseGameModel):
     model = None
 
-    def __init__(self, test_name, test_case):
+    def __init__(self, test_name="", test_case=""):
         BaseGameModel.__init__(self, "Deep Neural Net GE", "deep_neural_net_genetic_evolution", "dnnge", test_name,
                                test_case)
 
