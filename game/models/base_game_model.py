@@ -12,6 +12,7 @@ from game.environment.action import Action
 from game.helpers.constants import Constants
 from game.environment.environment import Environment
 from statistics import stdev, mean
+from pathlib import Path
 
 
 class BaseGameModel:
@@ -45,11 +46,7 @@ class BaseGameModel:
 
     def log_test_score(self, score):
         path = "scores/" + self.short_name + "_" + self.test_name + ".csv"
-        if not os.path.exists(path):
-            with open(path, "w"):
-                pass
-        scores_file = open(path, "a")
-        with scores_file:
+        with open(path, "a") as scores_file:
             writer = csv.writer(scores_file)
             writer.writerow([str(self.test_case), score])
 
@@ -99,7 +96,6 @@ class BaseGameModel:
         plt.legend(loc="upper left")
         plt.savefig("scores/" + self.short_name + ".png", bbox_inches="tight")
         plt.close()
-
 
     def _predict(self, environment, model):
         predictions = []
