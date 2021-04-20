@@ -14,6 +14,12 @@ def selection_rate_test():
 
     test_name = "Selection_Rate"
 
+    width = 300
+    height = 300
+    fruit = 1
+    chance = 0
+    boost = 1
+
     for selection_rate in [0.01, 0.1, 0.5, 1.0]:
 
         ga_trainer = DNNGeneticEvolutionTrainer()
@@ -26,9 +32,12 @@ def selection_rate_test():
         Game(game_model,
             fps=Constants.FPS,
             pixel_size=Constants.PIXEL_SIZE,
-            screen_width=Constants.SCREEN_WIDTH,
-            screen_height=Constants.SCREEN_HEIGHT + Constants.NAVIGATION_BAR_HEIGHT,
-            navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT)
+            screen_width=width,
+            screen_height=height,
+            navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT,
+            number_of_fruit=fruit,
+            special_chance=chance,
+            special_boost=boost)
 
     path = "scores/deep_neural_net_genetic_evolution_" + test_name + ".csv"
     _save_test_png(path, test_name, "selection rate", "score")
