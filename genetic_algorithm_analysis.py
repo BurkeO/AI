@@ -14,21 +14,21 @@ def selection_rate_test():
 
     test_name = "Selection_Rate"
 
-    # for selection_rate in [0.01, 0.1, 0.5, 1.0]:
+    for selection_rate in [0.01, 0.1, 0.5, 1.0]:
 
-        # ga_trainer = DNNGeneticEvolutionTrainer()
-        # ga_trainer.population_size = 100
-        # ga_trainer.selection_rate = selection_rate
-        # ga_trainer.mutation_rate = 0.01
-        # ga_trainer.move(ga_trainer.prepare_training_environment())
+        ga_trainer = DNNGeneticEvolutionTrainer()
+        ga_trainer.population_size = 100
+        ga_trainer.selection_rate = selection_rate
+        ga_trainer.mutation_rate = 0.01
+        ga_trainer.move(ga_trainer.prepare_training_environment())
 
-        # game_model=DNNGeneticEvolutionSolver(test_name, selection_rate)
-        # Game(game_model,
-        #     fps=Constants.FPS,
-        #     pixel_size=Constants.PIXEL_SIZE,
-        #     screen_width=Constants.SCREEN_WIDTH,
-        #     screen_height=Constants.SCREEN_HEIGHT + Constants.NAVIGATION_BAR_HEIGHT,
-        #     navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT)
+        game_model=DNNGeneticEvolutionSolver(test_name, selection_rate)
+        Game(game_model,
+            fps=Constants.FPS,
+            pixel_size=Constants.PIXEL_SIZE,
+            screen_width=Constants.SCREEN_WIDTH,
+            screen_height=Constants.SCREEN_HEIGHT + Constants.NAVIGATION_BAR_HEIGHT,
+            navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT)
 
     path = "scores/deep_neural_net_genetic_evolution_" + test_name + ".csv"
     _save_test_png(path, test_name, "selection rate", "score")
@@ -131,34 +131,6 @@ def screen_size_test():
 
 
 
-def fruit_chance_test():
-
-    test_name = "Fruit_Chance"
-
-    width = 300
-    height = 300
-    # fruit = 1
-    # chance = 0
-    boost = 1
-
-    # for fruit in [1, 2, 4, 8]:
-    #     for chance in [0.1, 0.2, 0.4, 0.8, 1]:
-    #         game_model=DNNGeneticEvolutionSolver(test_name, chance)
-    #         Game(game_model=game_model,
-    #             fps=Constants.FPS,
-    #             pixel_size=Constants.PIXEL_SIZE,
-    #             screen_width=width,
-    #             screen_height=height,
-    #             navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT,
-    #             number_of_fruit=fruit,
-    #             special_chance=chance,
-    #             special_boost=boost)
-
-    path = "scores/deep_neural_net_genetic_evolution_" + test_name + ".csv"
-    _save_test_png2(path, test_name, "fruit chance", "score")
-
-
-
 def fruit_boost_test():
 
     test_name = "Fruit_Boost"
@@ -166,10 +138,10 @@ def fruit_boost_test():
     width = 300
     height = 300
     # fruit = 1
-    chance = 0
+    chance = 1
     # boost = 1
 
-    for fruit in [8, 4, 2, 1]:
+    for fruit in [8]:
         for boost in [1, 2, 4, 8]:
             game_model=DNNGeneticEvolutionSolver(test_name, boost)
             Game(game_model=game_model,
@@ -185,6 +157,32 @@ def fruit_boost_test():
     path = "scores/deep_neural_net_genetic_evolution_" + test_name + ".csv"
     _save_test_png2(path, test_name, "fruit boost", "score")
 
+
+def fruit_chance_test():
+
+    test_name = "Fruit_Chance"
+
+    width = 300
+    height = 300
+    # fruit = 1
+    # chance = 0
+    boost = 2
+
+    for fruit in [1]:
+        for chance in [0, 0.2, 0.5, 0.8, 1]:
+            game_model=DNNGeneticEvolutionSolver(test_name, chance)
+            Game(game_model=game_model,
+                fps=Constants.FPS,
+                pixel_size=Constants.PIXEL_SIZE,
+                screen_width=width,
+                screen_height=height,
+                navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT,
+                number_of_fruit=fruit,
+                special_chance=chance,
+                special_boost=boost)
+
+    path = "scores/deep_neural_net_genetic_evolution_" + test_name + ".csv"
+    _save_test_png2(path, test_name, "fruit chance", "score")
 
 
 def _save_test_png(input_path, test_name, x_label, y_label):
@@ -241,17 +239,17 @@ def _save_test_png2(input_path, test_name, x_label, y_label):
 
 if __name__ == '__main__':
 
-    # selection_rate_test()
-    # mutation_rate_test() 
-    # population_size_test()
+    selection_rate_test()
+    mutation_rate_test() 
+    population_size_test()
 
-    # ga_trainer = DNNGeneticEvolutionTrainer()
-    # ga_trainer.population_size = 500
-    # ga_trainer.selection_rate = 0.01
-    # ga_trainer.mutation_rate = 0.01
-    # ga_trainer.move(ga_trainer.prepare_training_environment())
+    ga_trainer = DNNGeneticEvolutionTrainer()
+    ga_trainer.population_size = 500
+    ga_trainer.selection_rate = 0.01
+    ga_trainer.mutation_rate = 0.01
+    ga_trainer.move(ga_trainer.prepare_training_environment())
 
-    # screen_size_test()
+    screen_size_test()
 
-    # fruit_chance_test()
-    fruit_boost_test()
+    fruit_boost_test()    
+    fruit_chance_test()
