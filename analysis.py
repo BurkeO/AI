@@ -15,9 +15,9 @@ def main(args: Namespace):
         analyser.mutation_rate_test()
         analyser.population_size_test()
 
-    analyser.screen_size_test()
-    analyser.fruit_boost_test()
-    # analyser.fruit_chance_test()
+    # analyser.screen_size_test()
+    # analyser.fruit_boost_test()
+    analyser.fruit_chance_test()
 
 
 def parse_args():

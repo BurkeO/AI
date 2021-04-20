@@ -23,9 +23,9 @@ class Analysis(ABC):
         with open(input_path, "r") as scores:
             reader = csv.reader(scores)
             data = list(reader)
-            for i in range(0, len(data)):
-                x.append(str(data[i][0]))
-                y.append(float(data[i][1]))
+            for x_value, y_value in data:
+                x.append(x_value)
+                y.append(float(y_value))
 
         plt.subplots()
         plt.plot(x, y, label="score")

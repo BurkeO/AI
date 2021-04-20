@@ -8,6 +8,7 @@ from game.models.domain_specific.a_star_solver import AStarSolver
 from .analysis_parent import Analysis
 from pathlib import Path
 import os
+import itertools
 
 
 class AStarAnalyser(Analysis):
@@ -39,7 +40,6 @@ class AStarAnalyser(Analysis):
                  special_chance=self.chance,
                  special_boost=self.boost)
 
-
         self._save_test_png(path, test_name, "screen size", "score")
 
     def fruit_boost_test(self):
@@ -49,8 +49,11 @@ class AStarAnalyser(Analysis):
         if Path(path).exists():
             os.remove(path)
 
-        for fruit in [1, 2, 4, 8]:
-            for boost in [1, 2, 4, 8]:
+        x_values = [1, 2, 4, 8]
+        legend_values = [1, 2, 4, 8]
+
+        for fruit in legend_values:
+            for boost in x_values:
                 game_model = AStarSolver(test_name, boost)
                 Game(game_model=game_model,
                      fps=Constants.FPS,
@@ -62,8 +65,7 @@ class AStarAnalyser(Analysis):
                      special_chance=1,
                      special_boost=boost)
 
-
-        self._save_test_png2(path, test_name, "fruit boost", "score")
+        self._save_test_png_two(path, test_name, "fruit boost", "score", x_values, legend_values)
 
     def fruit_chance_test(self):
         test_name = "Fruit_Chance"
@@ -72,8 +74,11 @@ class AStarAnalyser(Analysis):
         if Path(path).exists():
             os.remove(path)
 
-        for fruit in [1, 2, 4, 8]:
-            for chance in [0, 0.2, 0.5, 0.8, 1]:
+        legend_values = [1, 2, 4, 8]
+        x_values = [0, 0.2, 0.5, 0.8, 1]
+
+        for fruit in legend_values:
+            for chance in x_values:
                 game_model = AStarSolver(test_name, chance)
                 Game(game_model=game_model,
                      fps=Constants.FPS,
@@ -85,37 +90,35 @@ class AStarAnalyser(Analysis):
                      special_chance=chance,
                      special_boost=2)
 
+        self._save_test_png_two(path, test_name, "fruit chance", "score", x_values, legend_values)
 
-        self._save_test_png2(path, test_name, "fruit chance", "score")
+    def _save_test_png_two(self, input_path, test_name, x_label, y_label, x_values, legend_values):
+        x_values.sort()
 
-    def _save_test_png2(self, input_path, test_name, x_label, y_label):
-        x = []
-        count_1_list = []
-        count_2_list = []
-        count_3_list = []
-        count_4_list = []
+        x_value_to_list = {}
+        for x in x_values:
+            x_value_to_list[str(x)] = []
 
         with open(input_path, "r") as scores:
             reader = csv.reader(scores)
             data = list(reader)
             for boost, score in data:
-                if str(boost) not in x:
-                    x.append(str(boost))
-                    x.sort()
-                if x.index(str(boost)) == 0:
-                    count_1_list.append(float(score))
-                elif x.index(str(boost)) == 1:
-                    count_2_list.append(float(score))
-                elif x.index(str(boost)) == 2:
-                    count_3_list.append(float(score))
-                elif x.index(str(boost)) == 3:
-                    count_4_list.append(float(score))
+                x_value_to_list[boost].append(score)
 
-        plt.plot(x, count_1_list, label="count: 1")
-        plt.plot(x, count_2_list, label="count: 2")
-        plt.plot(x, count_3_list, label="count: 4")
-        plt.plot(x, count_4_list, label="count: 8")
+        for index, legend in enumerate(legend_values):
+            values_list = []
+            for y_list in x_value_to_list.values():
+                values_list.append(y_list[index])
+            plt.plot(x_values, values_list, label=f"count {legend}")
 
+
+
+
+        # plt.plot(x, count_1_list, label="count: 1")
+        # plt.plot(x, count_2_list, label="count: 2")
+        # plt.plot(x, count_3_list, label="count: 4")
+        # plt.plot(x, count_4_list, label="count: 8")
+        #
         plt.title(test_name)
         plt.xlabel(x_label)
         plt.ylabel(y_label)
