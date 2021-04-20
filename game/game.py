@@ -65,7 +65,7 @@ class Game:
             self._display()
         
         self.model.log_test_score(self.model.final_avg)
-
+        self.model.clear_score_log()
 
     def draw_pixel(self, surf, color, point):
         rect = pygame.Rect((point.x, point.y), (self.pixel_size, self.pixel_size))
