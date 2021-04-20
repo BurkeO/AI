@@ -35,11 +35,7 @@ class BaseGameModel:
 
     def log_score(self, score):
         path = "scores/" + self.short_name + ".csv"
-        if not os.path.exists(path):
-            with open(path, "w"):
-                pass
-        scores_file = open(path, "a")
-        with scores_file:
+        with open(path, "a") as scores_file:
             writer = csv.writer(scores_file, lineterminator='\n')
             writer.writerow([score])
         self._save_png(path, "runs", "scores")
