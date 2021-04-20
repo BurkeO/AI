@@ -10,8 +10,8 @@ from math import sqrt
 
 
 class AStarSolver(BaseGameModel):
-    def __init__(self):
-        super().__init__("A Star", "a_star", "star")
+    def __init__(self, test_name, test_case):
+        super().__init__("A Star", "a_star", "star", test_name, test_case)
 
     def move(self, environment):
         super().move(environment)

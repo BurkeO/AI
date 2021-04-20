@@ -43,7 +43,7 @@ class BaseGameModel:
     def log_test_score(self, score):
         path = "scores/" + self.short_name + "_" + self.test_name + ".csv"
         with open(path, "a") as scores_file:
-            writer = csv.writer(scores_file)
+            writer = csv.writer(scores_file, lineterminator='\n')
             writer.writerow([str(self.test_case), score])
 
     def stats(self):

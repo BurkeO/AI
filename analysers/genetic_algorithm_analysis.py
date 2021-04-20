@@ -5,10 +5,10 @@ from game.models.domain_specific.dnn_genetic_evolution_ai_solver import (DNNGene
                                                                          DNNGeneticEvolutionTrainer)
 
 
-class GeneticAlgorithmAnalysis(Analysis):
+class GeneticAlgorithmAnalyser(Analysis):
 
     def __init__(self):
-        super(GeneticAlgorithmAnalysis, self).__init__(analysis_name_str="deep_neural_net_genetic_evolution")
+        super(GeneticAlgorithmAnalyser, self).__init__(analysis_name_str="deep_neural_net_genetic_evolution")
         self.width = 300
         self.height = 300
         self.fruit = 1
