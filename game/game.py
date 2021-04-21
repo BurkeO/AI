@@ -48,8 +48,7 @@ class Game:
         self.snake.points = [self._screen_normalized_point(x) for x in self.environment.set_snake()]
         self.screen_objects.append(self.snake)
 
-        i=0
-        while i<Constants.RUNS:
+        while True:
             self._handle_user_input()
             pygame.time.Clock().tick(fps)
             self.environment.eat_fruit_if_possible()
@@ -59,13 +58,9 @@ class Game:
                 self.model.log_score(self.environment.reward())
                 self.stats = self.model.stats()
                 self.environment.set_snake()
-                i+=1
             self._sync_screen_with_environment()
             self._draw_screen()
             self._display()
-        
-        self.model.log_test_score(self.model.final_avg)
-        self.model.clear_score_log()
 
     def draw_pixel(self, surf, color, point):
         rect = pygame.Rect((point.x, point.y), (self.pixel_size, self.pixel_size))
