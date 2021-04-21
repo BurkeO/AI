@@ -9,7 +9,6 @@ from game.models.domain_specific.dnn_genetic_evolution_ai_solver import DNNGenet
 from game.game import Game
 
 
-
 def selection_rate_test():
 
     test_name = "Selection_Rate"
@@ -194,6 +193,30 @@ def fruit_chance_test():
     _save_test_png2(path, test_name, "fruit chance", "score")
 
 
+def final_test():
+
+    test_name = "Final_test"
+
+    width = 300
+    height = 300
+    fruit = 1
+    chance = 0
+    boost = 2
+
+    game_model=DNNGeneticEvolutionSolver(test_name, "ft")
+    Game(game_model=game_model,
+        fps=Constants.FPS,
+        pixel_size=Constants.PIXEL_SIZE,
+        screen_width=width,
+        screen_height=height,
+        navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT,
+        number_of_fruit=fruit,
+        special_chance=chance,
+        special_boost=boost)
+
+
+
+
 def _save_test_png(input_path, test_name, x_label, y_label):
     x = []
     y = []
@@ -248,17 +271,17 @@ def _save_test_png2(input_path, test_name, x_label, y_label):
 
 if __name__ == '__main__':
 
-    selection_rate_test()
-    mutation_rate_test() 
-    population_size_test()
+    # selection_rate_test()
+    # mutation_rate_test() 
+    # population_size_test()
 
-    ga_trainer = DNNGeneticEvolutionTrainer()
-    ga_trainer.population_size = 500
-    ga_trainer.selection_rate = 0.01
-    ga_trainer.mutation_rate = 0.01
-    ga_trainer.move(ga_trainer.prepare_training_environment())
+    # ga_trainer = DNNGeneticEvolutionTrainer()
+    # ga_trainer.population_size = 500
+    # ga_trainer.selection_rate = 0.01
+    # ga_trainer.mutation_rate = 0.01
+    # ga_trainer.move(ga_trainer.prepare_training_environment())
 
-    screen_size_test()
+    # screen_size_test()
 
-    fruit_boost_test()    
-    fruit_chance_test()
+    # fruit_boost_test()    
+    # fruit_chance_test()

@@ -11,6 +11,7 @@ from game.helpers.node import Node
 from game.environment.action import Action
 from game.helpers.constants import Constants
 from game.environment.environment import Environment
+from statistics import stdev, mean
 
 
 class BaseGameModel:
@@ -94,6 +95,8 @@ class BaseGameModel:
         average_range = len(x)
         plt.plot(x[-average_range:], [np.mean(y[-average_range:])] * len(y[-average_range:]), linestyle="--",
                  label="average")
+        plt.text(0.02, 0.04, f"Mean {mean(y)}", fontsize=8, transform=plt.gcf().transFigure)
+        plt.text(0.02, 0.005, f"St-dev {stdev(y)}", fontsize=8, transform=plt.gcf().transFigure)
 
         plt.title(self.short_name)
         plt.xlabel(x_label)
