@@ -16,3 +16,6 @@ class Node:
 
     def __hash__(self):
         return hash(str(self.point.x) + str(self.point.y))
+
+    def copy(self):
+        return Node(Point(self.point.x, self.point.y), self.action, self.previous_node)
