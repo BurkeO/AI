@@ -57,7 +57,7 @@ class Game:
                 if not self.environment.step(ai_action):
                     self.model.reset()
                     # TODO set is_analysing arg
-                    self.model.log_score(self.environment.reward(), is_analysing=True)
+                    self.model.log_score(self.environment.reward(), is_analysing=False)
                     self.stats = self.model.stats()
                     self.environment.set_snake()
                     break

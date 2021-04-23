@@ -84,7 +84,10 @@ class BaseGameModel:
         plt.plot(x[-average_range:], [np.mean(y[-average_range:])] * len(y[-average_range:]), linestyle="--",
                  label="average")
         plt.text(0.02, 0.04, f"Mean {mean(y)}", fontsize=8, transform=plt.gcf().transFigure)
-        plt.text(0.02, 0.005, f"St-dev {stdev(y)}", fontsize=8, transform=plt.gcf().transFigure)
+        try:
+            plt.text(0.02, 0.005, f"St-dev {stdev(y)}", fontsize=8, transform=plt.gcf().transFigure)
+        except:  # TODO fix this
+            pass
 
         plt.title(self.short_name)
         plt.xlabel(x_label)
