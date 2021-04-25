@@ -5,15 +5,15 @@ from analysers.a_star_analysis import AStarAnalyser
 
 
 def main(args: Namespace):
-    switcher = {
-        "GeneticAlgorithmAnalyser": GeneticAlgorithmAnalyser,
-        "AStarAnalyser": AStarAnalyser
-    }
-    analyser = switcher[args.analyser]()
-    if args.analyser == "GeneticAlgorithmAnalyser":
+    if args.a_star:
+        analyser = AStarAnalyser()
+    elif args.genetic:
+        analyser = GeneticAlgorithmAnalyser()
         analyser.selection_rate_test()
         analyser.mutation_rate_test()
         analyser.population_size_test()
+    else:
+        raise ValueError("Must specify an analyser")
 
     analyser.screen_size_test()
     analyser.fruit_boost_test()
@@ -22,8 +22,9 @@ def main(args: Namespace):
 
 def parse_args():
     parser = ArgumentParser()
-    parser.add_argument("-a", "--analyser", type=str,
-                        help="The name of the analyser class to use (i.e. GeneticAlgorithmAnalyser)", required=True)
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-a", "--a_star", action="store_true", help="Flag for performing analysis on a star")
+    group.add_argument('-g', "--genetic", action='store_true', help="Flag for performing analysis on a star")
     return parser.parse_args()
 
 
