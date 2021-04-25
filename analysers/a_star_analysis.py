@@ -1,4 +1,6 @@
 import csv
+import os
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 
@@ -6,9 +8,6 @@ from game.game import Game
 from game.helpers.constants import Constants
 from game.models.domain_specific.a_star_solver import AStarSolver
 from .analysis_parent import Analysis
-from pathlib import Path
-import os
-import itertools
 
 
 class AStarAnalyser(Analysis):
@@ -38,7 +37,7 @@ class AStarAnalyser(Analysis):
                  navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT,
                  number_of_fruit=self.fruit,
                  special_chance=self.chance,
-                 special_boost=self.boost)
+                 special_boost=self.boost, is_analysing=True)
             os.remove("scores/" + game_model.short_name + ".csv")
 
         self._save_test_png(path, test_name, "screen size", "score")
@@ -64,7 +63,7 @@ class AStarAnalyser(Analysis):
                      navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT,
                      number_of_fruit=fruit,
                      special_chance=1,
-                     special_boost=boost)
+                     special_boost=boost, is_analysing=True)
                 os.remove("scores/" + game_model.short_name + ".csv")
 
         self._save_test_png_two(path, test_name, "fruit boost", "score", x_values, legend_values)
@@ -90,7 +89,7 @@ class AStarAnalyser(Analysis):
                      navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT,
                      number_of_fruit=fruit,
                      special_chance=chance,
-                     special_boost=2)
+                     special_boost=2, is_analysing=True)
                 os.remove("scores/" + game_model.short_name + ".csv")
 
         self._save_test_png_two(path, test_name, "fruit chance", "score", x_values, legend_values)
@@ -121,3 +120,8 @@ class AStarAnalyser(Analysis):
         plt.legend(loc="upper left")
         plt.savefig(f"scores/{self.analysis_name_str}_" + test_name + ".png", bbox_inches="tight")
         plt.close()
+
+    def run(self):
+        self.screen_size_test()
+        self.fruit_boost_test()
+        self.fruit_chance_test()

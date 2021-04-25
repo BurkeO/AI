@@ -8,6 +8,9 @@ class Analysis(ABC):
     def __init__(self, analysis_name_str) -> None:
         self.analysis_name_str = analysis_name_str
 
+    def run(self):
+        raise NotImplementedError
+
     def screen_size_test(self):
         raise NotImplementedError
 

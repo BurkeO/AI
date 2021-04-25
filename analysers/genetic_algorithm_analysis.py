@@ -1,10 +1,8 @@
-import pygame
-
-from .analysis_parent import Analysis
 from game.game import Game
 from game.helpers.constants import Constants
 from game.models.domain_specific.dnn_genetic_evolution_ai_solver import (DNNGeneticEvolutionSolver,
                                                                          DNNGeneticEvolutionTrainer)
+from .analysis_parent import Analysis
 
 
 class GeneticAlgorithmAnalyser(Analysis):
@@ -36,7 +34,7 @@ class GeneticAlgorithmAnalyser(Analysis):
                  navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT,
                  number_of_fruit=self.fruit,
                  special_chance=self.chance,
-                 special_boost=self.boost)
+                 special_boost=self.boost, is_analysing=True)
 
         path = f"scores/{self.analysis_name_str}_" + test_name + ".csv"
         self._save_test_png(path, test_name, "selection rate", "score")
@@ -60,7 +58,7 @@ class GeneticAlgorithmAnalyser(Analysis):
                  navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT,
                  number_of_fruit=self.fruit,
                  special_chance=self.chance,
-                 special_boost=self.boost)
+                 special_boost=self.boost, is_analysing=True)
 
         path = f"scores/{self.analysis_name_str}_" + test_name + ".csv"
         self._save_test_png(path, test_name, "mutation rate", "score")
@@ -84,19 +82,13 @@ class GeneticAlgorithmAnalyser(Analysis):
                  navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT,
                  number_of_fruit=self.fruit,
                  special_chance=self.chance,
-                 special_boost=self.boost)
+                 special_boost=self.boost, is_analysing=True)
 
         path = f"scores/{self.analysis_name_str}_" + test_name + ".csv"
         self._save_test_png(path, test_name, "population size", "score")
 
     def screen_size_test(self):
         test_name = "Screen_Size"
-
-        ga_trainer = DNNGeneticEvolutionTrainer()
-        ga_trainer.population_size = 500
-        ga_trainer.selection_rate = 0.01
-        ga_trainer.mutation_rate = 0.01
-        ga_trainer.move(ga_trainer.prepare_training_environment())
 
         for size in [300, 400, 500, 600]:
             game_model = DNNGeneticEvolutionSolver(test_name, size)
@@ -108,19 +100,13 @@ class GeneticAlgorithmAnalyser(Analysis):
                  navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT,
                  number_of_fruit=self.fruit,
                  special_chance=self.chance,
-                 special_boost=self.boost)
+                 special_boost=self.boost, is_analysing=True)
 
         path = f"scores/{self.analysis_name_str}_" + test_name + ".csv"
         self._save_test_png(path, test_name, "screen size", "score")
 
     def fruit_boost_test(self):
         test_name = "Fruit_Boost"
-
-        ga_trainer = DNNGeneticEvolutionTrainer()
-        ga_trainer.population_size = 500
-        ga_trainer.selection_rate = 0.01
-        ga_trainer.mutation_rate = 0.01
-        ga_trainer.move(ga_trainer.prepare_training_environment())
 
         for fruit in [8]:
             for boost in [1, 2, 4, 8]:
@@ -133,19 +119,13 @@ class GeneticAlgorithmAnalyser(Analysis):
                      navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT,
                      number_of_fruit=fruit,
                      special_chance=1,
-                     special_boost=boost)
+                     special_boost=boost, is_analysing=True)
 
         path = f"scores/{self.analysis_name_str}_" + test_name + ".csv"
         self._save_test_png2(path, test_name, "fruit boost", "score")
 
     def fruit_chance_test(self):
         test_name = "Fruit_Chance"
-
-        ga_trainer = DNNGeneticEvolutionTrainer()
-        ga_trainer.population_size = 500
-        ga_trainer.selection_rate = 0.01
-        ga_trainer.mutation_rate = 0.01
-        ga_trainer.move(ga_trainer.prepare_training_environment())
 
         for fruit in [1]:
             for chance in [0, 0.2, 0.5, 0.8, 1]:
@@ -158,7 +138,23 @@ class GeneticAlgorithmAnalyser(Analysis):
                      navigation_bar_height=Constants.NAVIGATION_BAR_HEIGHT,
                      number_of_fruit=fruit,
                      special_chance=chance,
-                     special_boost=2)
+                     special_boost=2, is_analysing=True)
 
         path = f"scores/{self.analysis_name_str}_" + test_name + ".csv"
         self._save_test_png2(path, test_name, "fruit chance", "score")
+
+    def run(self):
+        self.selection_rate_test()
+        self.mutation_rate_test()
+        self.population_size_test()
+
+        ga_trainer = DNNGeneticEvolutionTrainer()
+        ga_trainer.population_size = 500
+        ga_trainer.selection_rate = 0.01
+        ga_trainer.mutation_rate = 0.01
+        ga_trainer.move(ga_trainer.prepare_training_environment())
+
+        self.screen_size_test()
+
+        self.fruit_boost_test()
+        self.fruit_chance_test()

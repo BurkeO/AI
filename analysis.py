@@ -9,15 +9,10 @@ def main(args: Namespace):
         analyser = AStarAnalyser()
     elif args.genetic:
         analyser = GeneticAlgorithmAnalyser()
-        analyser.selection_rate_test()
-        analyser.mutation_rate_test()
-        analyser.population_size_test()
     else:
         raise ValueError("Must specify an analyser")
 
-    analyser.screen_size_test()
-    analyser.fruit_boost_test()
-    analyser.fruit_chance_test()
+    analyser.run()
 
 
 def parse_args():

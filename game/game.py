@@ -20,9 +20,9 @@ class Game:
     stats = ""
 
     def __init__(self, game_model, fps, pixel_size, screen_width, screen_height, navigation_bar_height,
-                 number_of_fruit, special_chance, special_boost):
+                 number_of_fruit, special_chance, special_boost, is_analysing=False):
         self.model = game_model
-
+        self.is_analysing = is_analysing
         self.stats = self.model.stats()
         self.fps = fps
         self.pixel_size = pixel_size
@@ -56,8 +56,7 @@ class Game:
                 ai_action = self.model.move(self.environment)
                 if not self.environment.step(ai_action):
                     self.model.reset()
-                    # TODO set is_analysing arg
-                    self.model.log_score(self.environment.reward(), is_analysing=False)
+                    self.model.log_score(self.environment.reward(), is_analysing=self.is_analysing)
                     self.stats = self.model.stats()
                     self.environment.set_snake()
                     break
@@ -65,7 +64,8 @@ class Game:
                 self._draw_screen()
                 self._display()
 
-        self.model.log_test_score(self.model.final_avg)
+        if self.is_analysing:
+            self.model.log_test_score(self.model.final_avg)
 
     def draw_pixel(self, surf, color, point):
         rect = pygame.Rect((point.x, point.y), (self.pixel_size, self.pixel_size))
