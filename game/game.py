@@ -59,7 +59,8 @@ class Game:
                     self.model.log_score(self.environment.reward(), is_analysing=self.is_analysing)
                     self.stats = self.model.stats()
                     self.environment.set_snake()
-                    break
+                    if self.is_analysing:
+                        break
                 self._sync_screen_with_environment()
                 self._draw_screen()
                 self._display()
