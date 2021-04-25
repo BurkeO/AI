@@ -34,10 +34,10 @@ class HamiltonSolver(BaseGameModel):
     def reset(self):
         self.hamilton_path = []
 
-    def get_neighbours(self,point):
+    def get_neighbours(self, previous_node):
         neighbouring_points = []
-        x = point.x
-        y = point.y
+        x = previous_node.point.x
+        y = previous_node.point.y
 
         is_first_row = y==1
         is_last_row = y==10
@@ -45,19 +45,46 @@ class HamiltonSolver(BaseGameModel):
         is_last_column = x==10
 
         if not is_first_row:
-            neighbouring_points.append(Point(x,y-1))
+            neighbouring_points.append(Node(Point(x,y-1), action=Action.DOWN, previous_node=previous_node))
         if not is_last_row:
-            neighbouring_points.append(Point(x, y - 1))
+            neighbouring_points.append(Node(Point(x, y + 1), action=Action.UP, previous_node=previous_node))
         if not is_first_column:
-            neighbouring_points.append(Point(x-1, y))
+            neighbouring_points.append(Node(Point(x-1, y), action=Action.RIGHT, previous_node=previous_node))
         if not is_last_column:
-            neighbouring_points.append(Point(x+1,y))
+            neighbouring_points.append(Node(Point(x+1,y), action=Action.LEFT, previous_node=previous_node))
+        random.shuffle(neighbouring_points)
+        return neighbouring_points
+
+
+    def node_in_path(self, node, path):
+        for path_node in path:
+            if node.equal(path_node):
+                return True
+        return False
+
+
+
+    def get_hamiltonian_path(self, current_node, path):
+        neighbours = self.get_neighbours(current_node)
+        if len(path) == 16 and current_node.connected(path[-1]):
+            return path
+        length_before_recursion= len(path)
+        while(len(neighbours) > 0):
+            next_neighbour_to_expand = neighbours.pop(0)
+            if not self.node_in_path(next_neighbour_to_expand,path):
+                path.append(next_neighbour_to_expand)
+                self.get_hamiltonian_path(next_neighbour_to_expand,path)
+                path_found = len(path)==16
+                if path_found:
+                    return path
+                else:
+                    continue
+        path.pop()
+        return path
 
 
 
 
-    def get_hamiltonian_path(self):
-        head = self.starting_node
 
     def rotate_cycle(self,cycle, starting_point):
         temp_array = cycle.copy()
@@ -100,6 +127,9 @@ class HamiltonSolver(BaseGameModel):
         environment.tiles[1][3] = Tile.snake
 
         # find the hamiltonian path
+        path = []
+        # self.get_hamiltonian_path(head,path)
+
         longest_path_solver = LongestPathSolver()
         self.hamilton_path = longest_path_solver.longest_path(head, tail, environment)
 
