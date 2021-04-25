@@ -19,7 +19,8 @@ def parse_args():
     parser = ArgumentParser()
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-a", "--a_star", action="store_true", help="Flag for performing analysis on a star")
-    group.add_argument('-g', "--genetic", action='store_true', help="Flag for performing analysis on a star")
+    group.add_argument('-g', "--genetic", action='store_true',
+                       help="Flag for performing analysis on genetic algorithms")
     return parser.parse_args()
 
 
