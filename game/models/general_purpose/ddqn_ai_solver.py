@@ -18,7 +18,7 @@ REPLAY_START_SIZE = 32
 TRAINING_FREQUENCY = 4
 TARGET_NETWORK_UPDATE_FREQUENCY = TRAINING_FREQUENCY * 1000
 MODEL_PERSISTENCE_UPDATE_FREQUENCY = 10000
-SCORE_LOGGING_FREQUENCY = 100
+SCORE_LOGGING_FREQUENCY_STEPS = 10000
 LEARNING_LOGGING_FREQUENCY = 10000
 
 EXPLORATION_MAX = 1.0
@@ -37,9 +37,9 @@ class BaseDDQNGameModel(BaseGameModel):
 
         self.model_path = self.model_dir_path + Constants.DQN_MODEL_NAME
 
-        if os.path.exists(os.path.dirname(self.model_path)):
-            shutil.rmtree(os.path.dirname(self.model_path), ignore_errors=True)
-        os.makedirs(os.path.dirname(self.model_path))
+        
+        if not os.path.exists(os.path.dirname(self.model_path)):
+            os.makedirs(os.path.dirname(self.model_path))
 
         self.action_space = len(Action.possible())
         self.ddqn = DDQNModel(self.model_input_shape, self.action_space).model
