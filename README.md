@@ -35,7 +35,7 @@ only taken into account in the following algorithms, as the report illustrates:
 * A*
 * Hamiltonian Cycles
 * Genetic Evolution
-* DNN
+* DQN
 
 ## Cross Validation
 1. Use the *analysis.py* file
