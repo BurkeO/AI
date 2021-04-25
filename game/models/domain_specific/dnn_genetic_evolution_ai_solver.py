@@ -33,8 +33,7 @@ class DNNGeneticEvolutionTrainer(BaseGameModel):
     model = None
 
     def __init__(self):
-        BaseGameModel.__init__(self, "Deep Neural Net GE", "deep_neural_net_genetic_evolution_trainer", "dnnget", "",
-                               "")
+        BaseGameModel.__init__(self, "Deep Neural Net GE", "deep_neural_net_genetic_evolution_trainer", "dnnget")
 
     def move(self, environment):
         if self.model is None:
