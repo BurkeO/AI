@@ -17,3 +17,5 @@ class Constants:
     SCREEN_DEPTH = 32
     ENV_HEIGHT = int(SCREEN_HEIGHT / PIXEL_SIZE)
     ENV_WIDTH = int(SCREEN_WIDTH / PIXEL_SIZE)
+    ##
+    RUNS = 10

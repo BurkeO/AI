@@ -11,9 +11,10 @@ from tf_models.dnn_model import DeepNeuralNetModel
 
 class DNNGeneticEvolutionSolver(BaseGameModel):
     model = None
+    
 
-    def __init__(self):
-        BaseGameModel.__init__(self, "Deep Neural Net GE", "deep_neural_net_genetic_evolution", "dnnge")
+    def __init__(self, test_name, test_case):
+        BaseGameModel.__init__(self, "Deep Neural Net GE", "deep_neural_net_genetic_evolution", "dnnge", test_name, test_case)
 
     def move(self, environment):
         if self.model is None:
@@ -32,7 +33,7 @@ class DNNGeneticEvolutionTrainer(BaseGameModel):
     model = None
 
     def __init__(self):
-        BaseGameModel.__init__(self, "Deep Neural Net GE", "deep_neural_net_genetic_evolution_trainer", "dnnget")
+        BaseGameModel.__init__(self, "Deep Neural Net GE", "deep_neural_net_genetic_evolution_trainer", "dnnget", "", "")
 
     def move(self, environment):
         if self.model is None:
@@ -42,7 +43,8 @@ class DNNGeneticEvolutionTrainer(BaseGameModel):
 
     def _genetic_evolution(self):
         population = None
-        while True:
+        max_gen = 11
+        while self.generation < max_gen:
             population_size = len(population) if population is not None else self.population_size
             print("generation: " + str(self.generation) + ", population: " + str(
                 population_size) + ", mutation_rate: " + str(self.mutation_rate))
@@ -71,6 +73,7 @@ class DNNGeneticEvolutionTrainer(BaseGameModel):
             new_population = self._mutation(base_offsprings)
             population = new_population
             self.generation += 1
+
 
     def _pair(self, parents):
         total_parents_score = sum([x[1] for x in parents])
@@ -101,7 +104,8 @@ class DNNGeneticEvolutionTrainer(BaseGameModel):
             if i == len(population) - 1:
                 print("\r" + "\033[K" + "\r", )
             else:
-                print("\r" + str(i + 1) + " out of " + str(len(population)))
+                pass
+                # print("\r" + str(i + 1) + " out of " + str(len(population)))
 
         scores_for_chromosomes.sort(key=lambda x: x[1])
         print("population: " + str(mean([x[1] for x in scores_for_chromosomes])))
