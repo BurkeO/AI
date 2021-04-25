@@ -47,6 +47,12 @@ class BaseGameModel:
             writer = csv.writer(scores_file, lineterminator='\n')
             writer.writerow([str(self.test_case), score])
 
+    def clear_score_log(self):
+        path = "scores/" + self.short_name + ".csv"
+        if not os.path.exists(path):
+            with open(path, "w+"): ## truncating the file to length 0
+                pass
+
     def stats(self):
         path = "scores/" + self.short_name + ".csv"
         if not os.path.exists(path):
