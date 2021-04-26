@@ -44,6 +44,7 @@ class Environment:
     def step(self, action: Action):
         if Action.is_reverse(self.snake_action, action):
             # print "Forbidden reverse action attempt!"
+            print("Reverse action error triggered")
             return
         self.snake_action = action
         head = self.snake[0]

@@ -31,10 +31,9 @@ class HamiltonSolver(BaseGameModel):
                 return_action = hamilton_path[0].action
                 break
             elif node.point.x == self.starting_node.point.x and node.point.y == self.starting_node.point.y:
-                # self.starting_node = hamilton_path[next_index]
                 return_action = hamilton_path[next_index].action
                 break
-
+        environment.snake_action = Action.get_reverse(return_action)
         return Action.get_reverse(return_action)
 
 
@@ -51,19 +50,19 @@ class HamiltonSolver(BaseGameModel):
         is_first_column = x==1
         is_last_column = x==self.num_rows
 
-        if not is_first_row:
+        if not is_first_row and previous_node.action != Action.UP:
             neighbouring_points.append(Node(Point(x,y-1), action=Action.DOWN, previous_node=previous_node))
-        if not is_last_row:
+        if not is_last_row and previous_node.action != Action.DOWN:
             neighbouring_points.append(Node(Point(x, y + 1), action=Action.UP, previous_node=previous_node))
-        if not is_first_column:
+        if not is_first_column and previous_node.action != Action.LEFT:
             neighbouring_points.append(Node(Point(x-1, y), action=Action.RIGHT, previous_node=previous_node))
-        if not is_last_column:
+        if not is_last_column and previous_node.action != Action.RIGHT:
             neighbouring_points.append(Node(Point(x+1,y), action=Action.LEFT, previous_node=previous_node))
-        random.shuffle(neighbouring_points)
+
         return neighbouring_points
 
 
-    def node_in_path(self, node, path):
+    def node_in_path(self, node, path, path_dict):
         for path_node in path:
             if node.equal(path_node):
                 return True
@@ -71,7 +70,7 @@ class HamiltonSolver(BaseGameModel):
 
 
 
-    def get_hamiltonian_path(self, current_node, path):
+    def get_hamiltonian_path(self, current_node, path, path_dict):
         length_before_recursion = len(path)
         neighbours = self.get_neighbours(current_node)
         max_recursion_reached = len(path) == self.num_rows**2
@@ -143,19 +142,19 @@ class HamiltonSolver(BaseGameModel):
         starting_y = head.point.y
 
         # Move the snake to somewhere where the longest path will be defined
-        environment.tiles[head.point.y][head.point.x] = Tile.empty
-        head.action = Action.LEFT
-        head.point.x = 3
-        head.point.y = 1
-
-        tail.point.x = 4
-        tail.point.y = 1
-        tail.action=None
-
-        environment.snake[0].x = 3
-        environment.snake[0].y = 1
-        environment.snake_action = Action.LEFT
-        environment.tiles[1][3] = Tile.snake
+        # environment.tiles[head.point.y][head.point.x] = Tile.empty
+        # head.action = Action.LEFT
+        # head.point.x = 3
+        # head.point.y = 1
+        #
+        # tail.point.x = 4
+        # tail.point.y = 1
+        # tail.action=None
+        #
+        # environment.snake[0].x = 3
+        # environment.snake[0].y = 1
+        # environment.snake_action = Action.LEFT
+        # environment.tiles[1][3] = Tile.snake
 
         # find the hamiltonian path
         path = []
@@ -187,15 +186,15 @@ class HamiltonSolver(BaseGameModel):
 
 
        # move the snake back to where it started in the game
-        environment.tiles[1][3] = Tile.empty
-        environment.tiles[starting_y][starting_x] = Tile.snake
-
-        start_point = Point(starting_x, starting_y)
-        environment.snake[0] = start_point
-        start_node = Node(start_point)
-        self.rotate_cycle(self.hamilton_path,start_node)
-        self.starting_node = self.hamilton_path[0]
-        environment.snake_action = self.starting_node.action
+       #  environment.tiles[1][3] = Tile.empty
+       #  environment.tiles[starting_y][starting_x] = Tile.snake
+       #
+       #  start_point = Point(starting_x, starting_y)
+       #  environment.snake[0] = start_point
+       #  start_node = Node(start_point)
+        # self.rotate_cycle(self.hamilton_path,start_node)
+        # self.starting_node = self.hamilton_path[0]
+        # environment.snake_action = Action.get_reverse(self.hamilton_path[0].action)
         return self.hamilton_path
 
 
