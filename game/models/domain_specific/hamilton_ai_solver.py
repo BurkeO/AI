@@ -7,6 +7,7 @@ from game.models.domain_specific.longest_path_ai_solver import LongestPathSolver
 import random
 
 
+
 class HamiltonSolver(BaseGameModel):
     hamilton_path = []
 
@@ -14,22 +15,28 @@ class HamiltonSolver(BaseGameModel):
         BaseGameModel.__init__(self, "Hamilton", "hamilton", "ha")
 
     def move(self, environment):
+        self.num_rows = environment.height-2
         BaseGameModel.move(self, environment)
         if environment.is_in_fruitless_cycle():
             print(("Infinite fruitless cycle - game over at: " + str(environment.reward())))
             return environment.snake_action
 
         hamilton_path = self._hamilton_path(environment)
+        return_action = environment.snake_action
 
         for index in range(0, len(hamilton_path)):
             node = hamilton_path[index]
             next_index = index + 1
             if next_index == len(hamilton_path):
-                return hamilton_path[0].action
+                return_action = hamilton_path[0].action
+                break
             elif node.point.x == self.starting_node.point.x and node.point.y == self.starting_node.point.y:
                 # self.starting_node = hamilton_path[next_index]
-                return hamilton_path[next_index].action
-        return environment.snake_action
+                return_action = hamilton_path[next_index].action
+                break
+
+        return Action.get_reverse(return_action)
+
 
     def reset(self):
         self.hamilton_path = []
@@ -40,9 +47,9 @@ class HamiltonSolver(BaseGameModel):
         y = previous_node.point.y
 
         is_first_row = y==1
-        is_last_row = y==10
+        is_last_row = y==self.num_rows
         is_first_column = x==1
-        is_last_column = x==10
+        is_last_column = x==self.num_rows
 
         if not is_first_row:
             neighbouring_points.append(Node(Point(x,y-1), action=Action.DOWN, previous_node=previous_node))
@@ -65,16 +72,23 @@ class HamiltonSolver(BaseGameModel):
 
 
     def get_hamiltonian_path(self, current_node, path):
+        length_before_recursion = len(path)
         neighbours = self.get_neighbours(current_node)
-        if len(path) == 16 and current_node.connected(path[-1]):
+        max_recursion_reached = len(path) == self.num_rows**2
+        cycle_found = len(path)>0 and current_node.connected(path[0])
+
+        if max_recursion_reached:
+            if cycle_found:
+                return path
+            path.pop()
             return path
-        length_before_recursion= len(path)
+
         while(len(neighbours) > 0):
             next_neighbour_to_expand = neighbours.pop(0)
             if not self.node_in_path(next_neighbour_to_expand,path):
                 path.append(next_neighbour_to_expand)
                 self.get_hamiltonian_path(next_neighbour_to_expand,path)
-                path_found = len(path)==16
+                path_found = len(path)==self.num_rows**2
                 if path_found:
                     return path
                 else:
@@ -96,6 +110,23 @@ class HamiltonSolver(BaseGameModel):
             else:
                 self.hamilton_path = temp_array
                 return
+
+    def get_first_action(self,last_point,first_point):
+        x = last_point.point.x
+        y = last_point.point.y
+
+        x_difference = x - first_point.point.x
+        y_difference = y - first_point.point.y
+
+
+        if y_difference < 0:
+            return Action.UP
+        elif y_difference > 0:
+            return Action.DOWN
+        elif x_difference < 0:
+            return  Action.LEFT
+        elif x_difference > 0:
+            return Action.RIGHT
 
     def _hamilton_path(self, environment):
         if self.hamilton_path:
@@ -128,10 +159,31 @@ class HamiltonSolver(BaseGameModel):
 
         # find the hamiltonian path
         path = []
-        # self.get_hamiltonian_path(head,path)
+        self.get_hamiltonian_path(head,path)
+        updated_path = []
+        first_action = self.get_first_action(path[-1], path[0])
+        # for index,node in enumerate(path):
+        #     if index>0:
+        #         previous_node = path[index-1]
+        #         # action_taken = node.action
+        #         # previous_node.action = action_taken
+        #         updated_path.append(previous_node)
+        # updated_path.append(path[-1])
+        path[0].action = first_action
 
-        longest_path_solver = LongestPathSolver()
-        self.hamilton_path = longest_path_solver.longest_path(head, tail, environment)
+        # previous_node = path[-1]
+        # node = path[0]
+        # action_taken = node.action
+        # previous_node.action = action_taken
+        # updated_path.push(previous_node)
+
+
+        self.hamilton_path = path
+
+
+
+        # longest_path_solver = LongestPathSolver()
+        # self.hamilton_path = longest_path_solver.longest_path(head, tail, environment)
 
 
        # move the snake back to where it started in the game
