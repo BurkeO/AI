@@ -13,6 +13,7 @@ class HamiltonSolver(BaseGameModel):
 
     def __init__(self):
         BaseGameModel.__init__(self, "Hamilton", "hamilton", "ha")
+        # Flag that is True to use the recursive Hamiltonian Solver and False to use the longest path Hamiltonian cycle solver
         self.custom_algorithm = False
 
     def move(self, environment):
@@ -46,7 +47,12 @@ class HamiltonSolver(BaseGameModel):
 
     def reset(self):
         self.hamilton_path = []
-
+    '''
+    gets all the valid neighbours of a given node based on their positions in the grid
+    e.g a node in the center of the board will have 4 neighbours. I took the current direction 
+    of a node into account and did not return the neighbour in the opposite direction of the snakes 
+    current trajectory
+    '''
     def get_neighbours(self, previous_node):
         neighbouring_points = []
         x = previous_node.point.x
