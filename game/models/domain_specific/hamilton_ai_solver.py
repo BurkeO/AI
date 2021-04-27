@@ -69,12 +69,18 @@ class HamiltonSolver(BaseGameModel):
         return neighbouring_points
 
 
+    '''
+    Helper function for the recurisve Hamiltonian solver. Checks if a node
+    is already in the path in constant time
+    '''
     def node_in_path(self, node, path, path_dict):
         return (node.point.x, node.point.y) in path_dict
 
 
 
-
+    '''
+    Recursive Hamiltonian cycle solver. N! time complexity
+    '''
     def get_hamiltonian_path(self, current_node, path, path_dict):
         neighbours = self.get_neighbours(current_node)
         max_recursion_reached = len(path) == self.num_rows**2
@@ -105,7 +111,13 @@ class HamiltonSolver(BaseGameModel):
 
 
 
-
+    '''
+    Helper function for the longest path Hamiltonian cycle solver. We hard coded a starting point so that 
+    this function always finds a Hamiltonian cycle. When the path is found, I rotate the path so that 
+    it starts with the starting node in the snake game.
+    
+    This function has O(N) time complexity where N is the length of the path 
+    '''
     def rotate_cycle(self,cycle, starting_point):
         temp_array = cycle.copy()
         for node in cycle:
@@ -117,6 +129,10 @@ class HamiltonSolver(BaseGameModel):
                 self.hamilton_path = temp_array
                 return
 
+    '''
+    Find the transformation that happens between the first and last node in a 
+    cycle to join them together
+    '''
     def get_first_action(self,last_point,first_point):
         x = last_point.point.x
         y = last_point.point.y
@@ -134,6 +150,10 @@ class HamiltonSolver(BaseGameModel):
         elif x_difference > 0:
             return Action.RIGHT
 
+    '''
+    Recursive Hamiltonian cycle solver. Finds a Hamiltonian cycle
+    in N! time 
+    '''
     def _hamilton_path(self, environment):
         if self.hamilton_path:
             return self.hamilton_path
@@ -149,6 +169,10 @@ class HamiltonSolver(BaseGameModel):
 
         return self.hamilton_path
 
+    '''
+    Modified the original Hamiltonian path solver in the slitherin repo so that 
+    it always converges to an answer that is a Hamiltonian cycle and wins the game
+    '''
     def modified_slitherin_hamiltonian_cycle(self, environment):
         if self.hamilton_path:
             return self.hamilton_path
