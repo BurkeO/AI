@@ -2,6 +2,7 @@ import os
 import random
 import shutil
 from statistics import mean
+from datetime import datetime
 
 import numpy as np
 
@@ -13,17 +14,17 @@ from tf_models.ddqn_model import DDQNModel
 GAMMA = 0.99
 MEMORY_SIZE = 10000
 BATCH_SIZE = 32
-REPLAY_START_SIZE = 50000
+REPLAY_START_SIZE = 32
 TRAINING_FREQUENCY = 4
 TARGET_NETWORK_UPDATE_FREQUENCY = TRAINING_FREQUENCY * 1000
 MODEL_PERSISTENCE_UPDATE_FREQUENCY = 10000
-SCORE_LOGGING_FREQUENCY = 100
+SCORE_LOGGING_FREQUENCY_STEPS = 10000
 LEARNING_LOGGING_FREQUENCY = 10000
 
 EXPLORATION_MAX = 1.0
 EXPLORATION_MIN = 0.1
 EXPLORATION_TEST = 0.01
-EXPLORATION_STEPS = 850000
+EXPLORATION_STEPS = 150000
 EXPLORATION_DECAY = (EXPLORATION_MAX - EXPLORATION_MIN) / EXPLORATION_STEPS
 
 
@@ -36,9 +37,9 @@ class BaseDDQNGameModel(BaseGameModel):
 
         self.model_path = self.model_dir_path + Constants.DQN_MODEL_NAME
 
-        if os.path.exists(os.path.dirname(self.model_path)):
-            shutil.rmtree(os.path.dirname(self.model_path), ignore_errors=True)
-        os.makedirs(os.path.dirname(self.model_path))
+        
+        if not os.path.exists(os.path.dirname(self.model_path)):
+            os.makedirs(os.path.dirname(self.model_path))
 
         self.action_space = len(Action.possible())
         self.ddqn = DDQNModel(self.model_input_shape, self.action_space).model
@@ -79,12 +80,14 @@ class DDQNTrainer(BaseDDQNGameModel):
         self.ddqn_target = DDQNModel(self.model_input_shape, self.action_space).model
         self.memory = []
         self.epsilon = EXPLORATION_MAX
+        self.score_output_path = "ddqn_avg_scores_" + str(Constants.ENV_HEIGHT) + "_" + datetime.now().strftime('%Y_%m_%d_%H_%M_%S') + ".csv"
+        self.total_runs = 0
 
     def move(self, environment):
         BaseDDQNGameModel.move(self, environment)
         self._ddqn()
 
-    def _ddqn(self, total_step_limit=10000000, total_run_limit=None, clip=True):
+    def _ddqn(self, total_step_limit=200000, total_run_limit=None, clip=True):
         run = 0
         total_step = 0
         scores = []
@@ -119,12 +122,19 @@ class DDQNTrainer(BaseDDQNGameModel):
 
                 if terminal:
                     scores.append(score)
+                    self.total_runs += 1
                     if len(scores) % SCORE_LOGGING_FREQUENCY == 0:
-                        self.log_score(mean(scores))
+                        self._log_dqn_scores(mean(scores))
                         print(('{{"metric": "score", "value": {}}}'.format(mean(scores))))
                         print(('{{"metric": "run", "value": {}}}'.format(run)))
                         scores = []
                     break
+
+    def _log_dqn_scores(self, avg_score):
+        output = str(self.total_runs) + "," + str(avg_score) + "\n"
+        print(output)
+        with open(self.score_output_path, "a") as myfile:
+            myfile.write(output)
 
     def _predict_move(self, state):
         if np.random.rand() < self.epsilon or len(self.memory) < REPLAY_START_SIZE:
