@@ -17,12 +17,13 @@ from statistics import stdev, mean
 class BaseGameModel:
     transposition_table = {}
 
-    def __init__(self, long_name, short_name, abbreviation, test_name, test_case):
+    # def __init__(self, long_name, short_name, abbreviation, test_name, test_case):    
+    def __init__(self, long_name, short_name, abbreviation):
         self.abbreviation = abbreviation
         self.long_name = long_name
         self.short_name = short_name
-        self.test_name = test_name
-        self.test_case = test_case
+        # self.test_name = test_name
+        # self.test_case = test_case
 
     def move(self, environment):
         self.starting_node = Node(environment.snake[0])
@@ -44,14 +45,16 @@ class BaseGameModel:
         self._save_png(path, "runs", "scores")
 
     def log_test_score(self, score):
-        path = "scores/" + self.short_name + "_" + self.test_name + ".csv"
+        # path = "scores/" + self.short_name + "_" + self.test_name + ".csv"        
+        path = "scores/" + self.short_name + ".csv"
         if not os.path.exists(path):
             with open(path, "w"):
                 pass
         scores_file = open(path, "a")
         with scores_file:
             writer = csv.writer(scores_file)
-            writer.writerow([str(self.test_case), score])
+            # writer.writerow([str(self.test_case), score])            
+            writer.writerow([score])
 
     def clear_score_log(self):
         path = "scores/" + self.short_name + ".csv"
