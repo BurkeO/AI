@@ -6,7 +6,6 @@ from enum import Enum
 import math
 
 
-
 class Action(Enum):
     LEFT = (-1, 0)
     UP = (0, -1)
@@ -74,8 +73,6 @@ class Action(Enum):
         actions = Action.all()
         return Action._neighbor(action, actions)
 
-
-
     @staticmethod
     def _neighbor(action, actions):
         actions_count = len(actions)
@@ -85,7 +82,6 @@ class Action(Enum):
                     return actions[0]
                 else:
                     return actions[i + 1]
-
 
     @staticmethod
     def adjusted_angles(action):

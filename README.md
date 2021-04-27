@@ -7,6 +7,7 @@ Table of Contents
 =================
 
   * [Usage](#usage)
+  * [Cross Validation](#Cross Validation)
   * [Rules](#rules)
   * [Modes](#modes)
      * [Domain specific](#domain-specific)
@@ -28,6 +29,30 @@ Table of Contents
 2. Go to the project's root folder.
 3. Install required packages`pip install -r requirements.txt`.
 4. Launch slitherin. I recommend starting with the help mode to see all available modes `python slitherin.py --help`.
+
+**Note** : The changes to the env that allow for extra fruit or an additional boost to the length of the snake were
+only taken into account in the following algorithms, as the report illustrates:
+* A*
+* Hamiltonian Cycles
+* Genetic Evolution
+* DQN
+
+## Cross Validation
+1. Use the *analysis.py* file
+2. See the arguments using 
+```
+python analysis.py --help
+``` 
+giving
+```
+optional arguments:
+  -h, --help     show this help message and exit
+  -a, --a_star   Flag for performing analysis on a star
+  -g, --genetic  Flag for performing analysis on genetic algorithms
+```
+For the specified model, yields plots such as those below
+
+<img src="scores/deep_neural_net_genetic_evolution_Fruit_Boost.png">
 
 ## Rules
 1. Snake has to move either forward, left or right.
