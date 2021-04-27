@@ -123,7 +123,7 @@ class DDQNTrainer(BaseDDQNGameModel):
                 if terminal:
                     scores.append(score)
                     self.total_runs += 1
-                    if len(scores) % SCORE_LOGGING_FREQUENCY == 0:
+                    if len(scores) % SCORE_LOGGING_FREQUENCY_STEPS == 0:
                         self._log_dqn_scores(mean(scores))
                         print(('{{"metric": "score", "value": {}}}'.format(mean(scores))))
                         print(('{{"metric": "run", "value": {}}}'.format(run)))
