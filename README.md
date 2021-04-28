@@ -7,7 +7,7 @@ Table of Contents
 =================
 
   * [Usage](#usage)
-  * [Cross Validation](#Cross Validation)
+  * [Cross Validation](#Cross-Validation)
   * [Rules](#rules)
   * [Modes](#modes)
      * [Domain specific](#domain-specific)
@@ -37,7 +37,7 @@ only taken into account in the following algorithms, as the report illustrates:
 * Genetic Evolution
 * DQN
 
-## Cross Validation
+## Cross-Validation
 1. Use the *analysis.py* file
 2. See the arguments using 
 ```
